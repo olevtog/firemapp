@@ -29,7 +29,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         sliding_layout.anchorPoint = .3f
 
-
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
