@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@+id/editTextRecherche"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/background_search_left"
+            android:src="@android:drawable/ic_menu_sort_by_size" />
+
+        <EditText
+            android:id="@+id/editTextRecherche"
+            android:layout_width="260dp"
+            android:padding="10dp"
+            android:textSize="25dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/background_search"
+            android:hint="Recherche"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_toRightOf="@+id/editTextRecherche"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_search_right"
+            android:src="@android:drawable/ic_menu_mylocation" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

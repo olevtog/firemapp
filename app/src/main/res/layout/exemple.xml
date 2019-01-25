@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_search_left"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:paddingTop="10dp" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:background="@drawable/background_search"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:hint="Recherche" />
+
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_search_right"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:src="@android:drawable/ic_menu_mylocation"
+            android:paddingTop="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
