@@ -55,6 +55,30 @@
                 android:textSize="24dp"
                 android:text="14/07/2018, 23h" />
 
+            <ImageView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/imageBsqfdutfdton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
+            <ImageButton
+                android:id="@+id/imageButfdsfdton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
 
         </LinearLayout>
 
