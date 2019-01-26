@@ -86,7 +86,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         // pour supprimer la barre en bas pour afficher la direction et un lien vers maps
         mMap.uiSettings.isMapToolbarEnabled = false
-
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = false
+        mMap.setPadding(0,120,0,100)
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
