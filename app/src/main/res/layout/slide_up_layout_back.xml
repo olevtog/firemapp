@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/button"
+            android:id="@+id/buttonOpenMenu"
             android:layout_width="wrap_content"
             android:layout_toLeftOf="@+id/editTextRecherche"
             android:layout_height="match_parent"
