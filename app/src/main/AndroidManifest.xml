@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DraverActivity"
+            android:name=".DrawerActivity"
             android:label="@string/title_activity_draver"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -39,12 +39,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
     </application>
 
 </manifest>

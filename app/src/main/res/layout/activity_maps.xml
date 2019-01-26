@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity">
+    tools:context=".DrawerActivity">
 
 
     <!-- slide up panel -->
@@ -27,6 +27,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <!-- Ici le fragment pour afficher la map google -->
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:map="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -34,8 +35,9 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MapsActivity" />
+                tools:context=".DrawerActivity" />
 
+            <!-- ce qui sera affiché au dessus de la map -->
             <include layout="@layout/slide_up_layout_back"/>
 
         </FrameLayout>
