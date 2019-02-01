@@ -2,14 +2,13 @@ package com.valette.defossez.firemapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.Toast
+import com.valette.defossez.firemapp.controller.FireworksController
+import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class FormAddFireworkActivity : AppCompatActivity() {
@@ -21,11 +20,11 @@ class FormAddFireworkActivity : AppCompatActivity() {
         setContentView(R.layout.activity_form_add_firework)
         initDateTimePickers()
         submit.setOnClickListener {
-            submit()
+            validate()
         }
     }
 
-    fun submit() {
+    fun validate() {
         var address = inputAddress.text
         var date = SimpleDateFormat("dd/MM/yy HH:mm").parse("${inputDate.text}  ${inputTime.text}")
         var title = inputTitle.text
