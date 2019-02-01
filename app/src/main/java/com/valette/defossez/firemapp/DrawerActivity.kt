@@ -17,6 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_draver.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
+import android.content.Intent
+
+
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener  {
 
@@ -54,7 +57,8 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_camera -> {
-                // Handle the camera action
+                val intent = Intent(this, FormAddFireworkActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_gallery -> {
 

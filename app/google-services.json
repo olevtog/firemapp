@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "391342866703",
+    "firebase_url": "https://firemap-219912.firebaseio.com",
+    "project_id": "firemap-219912",
+    "storage_bucket": "firemap-219912.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391342866703:android:cb7e8b04f96f17cf",
+        "android_client_info": {
+          "package_name": "com.valette.defossez.firemapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391342866703-un453n6tu8trqvdi713lln4r6hnktin2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAau2wsdIjPKYC9Zb0oqkpYoWGAFXmSzuY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
