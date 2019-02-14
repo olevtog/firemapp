@@ -9,15 +9,17 @@ import com.valette.defossez.firemapp.entity.Firework
 
 class FireworksController {
 
-    private val database = FirebaseDatabase.getInstance()
-    private val ref = database.reference.child("fireworks")
-    private val fireworks = ArrayList<Firework>()
+    companion object {
+        private val database = FirebaseDatabase.getInstance()
+        val ref = database.reference.child("fireworks")
+        var fireworks = ArrayList<Firework>()
+    }
 
     init {
-            ref.addListenerForSingleValueEvent( object : ValueEventListener {
+        ref.addListenerForSingleValueEvent( object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                val children = snapshot!!.children
+                val children = snapshot.children
                 children.forEach {
                     fireworks.add(it.getValue(Firework::class.java)!!)
                 }
@@ -31,7 +33,7 @@ class FireworksController {
     fun create(firework: Firework){
         val id = ref.push().key
         firework.id = id
-        this.ref.push().setValue(firework)
+        ref.push().setValue(firework)
     }
 
     fun getById(id: String){
