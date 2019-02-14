@@ -7,6 +7,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.Toast
 import com.valette.defossez.firemapp.controller.FireworksController
+import com.valette.defossez.firemapp.entity.Firework
 import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.text.SimpleDateFormat
 
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat
 class FormAddFireworkActivity : AppCompatActivity() {
 
     val cal = Calendar.getInstance()
+    val controller = FireworksController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,7 @@ class FormAddFireworkActivity : AppCompatActivity() {
         var title = inputTitle.text
         var description = inputDescription.text
         Toast.makeText(this," $address $date $title $description", Toast.LENGTH_SHORT).show()
+        controller.create(Firework("", title.toString(), description.toString(), 0.0, 0.0, address.toString(), date))
     }
 
     private fun initDateTimePickers(){
