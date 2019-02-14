@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_draver.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import android.content.Intent
+import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
 import java.time.Instant
 import java.util.*
@@ -123,7 +124,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(48.8534, 2.3488)))
 
 
-        val listFirework = ArrayList<Firework>()
+        val listFirework = FireworksController().getAll()
         var f1 = Firework("5", "titre5", "description5", 48.64, 2.64, "adress", Date())
         var f2 = Firework("6", "titre6", "description6", 48.74, 2.74, "adress", Date())
         var f3 = Firework("7", "titre7", "description7", 47.64, 2.84, "adress", Date())
