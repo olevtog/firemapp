@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -14,24 +13,23 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import android.content.Intent
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.valette.defossez.firemapp.controller.FireworksController
+import com.valette.defossez.firemapp.entity.Firework
 import kotlinx.android.synthetic.main.activity_draver.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
-import android.content.Intent
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.valette.defossez.firemapp.controller.FireworksController
-import com.valette.defossez.firemapp.entity.Firework
-import java.time.Instant
-import java.util.*
+import kotlinx.android.synthetic.main.slide_up_layout_front.*
+import java.text.SimpleDateFormat
+import kotlin.collections.ArrayList
 
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener  {
 
 
     private lateinit var mMap: GoogleMap
+    private val controller = FireworksController()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,27 +125,31 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         mMap.animateCamera(CameraUpdateFactory.zoomBy(25.0F))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(48.8534, 2.3488)))
 
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.reference.child("fireworks")
-        var fireworks = ArrayList<Firework>()
+        controller.getAll(this)
 
-        ref.addListenerForSingleValueEvent( object : ValueEventListener {
+        mMap.setOnMarkerClickListener{ marker ->
+            controller.getById(marker.tag.toString(), this)
+            true
+        }
+    }
 
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val children = snapshot.children
-                children.forEach {
-                    var f = it.getValue(Firework::class.java)!!
-                    mMap.addMarker(MarkerOptions()
-                            .position(LatLng(f.latitude, f.longitude))
-                            .title(f.title)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                println("lol")
-            }
-        })
+    fun displayMarkers(fireworks : ArrayList<Firework>){
+        for(f in fireworks){
+            mMap.addMarker(MarkerOptions()
+                    .position(LatLng(f.latitude, f.longitude))
+                    .title(f.title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                    .tag = f.id
+        }
+    }
 
+    fun openDetail(firework: Firework){
+        val format = SimpleDateFormat("dd/MM/yyy hh:mm")
+        textViewDate.text = format.format(firework.date)
+        textViewAddress.text = firework.address
+        textViewTitle.text = firework.title
+        textViewDescription.text = firework.description
+        sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
     }
 
 }

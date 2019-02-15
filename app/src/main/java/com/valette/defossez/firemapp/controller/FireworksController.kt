@@ -1,46 +1,40 @@
 package com.valette.defossez.firemapp.controller
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.valette.defossez.firemapp.entity.Firework
+import com.google.firebase.firestore.FirebaseFirestore
+import com.valette.defossez.firemapp.DrawerActivity
 
 
 class FireworksController {
 
-    companion object {
-        private val database = FirebaseDatabase.getInstance()
-        val ref = database.reference.child("fireworks")
-        var fireworks = ArrayList<Firework>()
-    }
-
-    init {
-        ref.addListenerForSingleValueEvent( object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val children = snapshot.children
-                children.forEach {
-                    fireworks.add(it.getValue(Firework::class.java)!!)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                println("lol")
-            }
-        })
-    }
+        private val db = FirebaseFirestore.getInstance()
 
     fun create(firework: Firework){
-        val id = ref.push().key
-        firework.id = id
-        ref.push().setValue(firework)
+        val newFireworkRef = db.collection("fireworks").document()
+        firework.id = newFireworkRef.id
+        newFireworkRef.set(firework)
     }
 
-    fun getById(id: String){
-
+    fun getAll(activity : DrawerActivity) {
+        var fireworks = ArrayList<Firework>()
+        db.collection("fireworks").get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        fireworks.add(document.toObject(Firework::class.java))
+                    }
+                    activity.displayMarkers(fireworks)
+                }
     }
 
-    fun getAll() : ArrayList<Firework>{
-        return fireworks
+    fun getById(id : String, activity : DrawerActivity){
+        db.collection("fireworks").document(id).get()
+                .addOnSuccessListener { document ->
+                if (document != null) {
+                    activity.openDetail(document.toObject(Firework::class.java)!!)
+                } else {
+                    print("err")
+            }
+        }
     }
 }
