@@ -21,6 +21,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
@@ -64,6 +65,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
 
         lancerLaRechercheDeLaLocalisation()
+
+        //Pour mettre la map quand on clique sur le bouton
+        boutonLocalisation.setOnClickListener {
+            allerALaPositionActuelle()
+        }
     }
 
 
@@ -166,6 +172,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
     }
 
+    private fun allerALaPositionActuelle() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLatitude, myLongitude), 12.0f), 1500, null)
+    }
 
     /*
        _____ _____   _____   _                 _ _           _   _
@@ -198,9 +207,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             myLatitude = myLocation.latitude
             myLongitude = myLocation.longitude
             if (addressTrouvee) {
+                Log.d("TAG", "Position : " + myLatitude + " ; " + myLongitude)
                 addressTrouvee = false
             }
-            Log.d("TAG", "Position : " + myLatitude + " ; " + myLongitude)
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
