@@ -1,5 +1,6 @@
 package com.valette.defossez.firemapp
 
+import android.Manifest
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -14,6 +15,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.support.v4.app.ActivityCompat
+import android.util.Log
+import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
@@ -25,11 +33,16 @@ import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 
-class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener  {
+class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     private lateinit var mMap: GoogleMap
     private val controller = FireworksController()
+
+    private var addressTrouvee = true
+    private var myLatitude: Double = 0.0
+    private var myLongitude: Double = 0.0
+    private var locationManager: LocationManager? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +62,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         // Pour ouvrir le menu
         buttonOpenMenu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
+        }
+
+        lancerLaRechercheDeLaLocalisation()
+
+        //Pour mettre la map quand on clique sur le bouton
+        boutonLocalisation.setOnClickListener {
+            allerALaPositionActuelle()
         }
     }
 
@@ -119,22 +139,22 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = false
         // pour ajouter une marge afin de compass ne soit pas caché ainsi que le logo google
-        mMap.setPadding(0,120,0,100)
+        mMap.setPadding(0, 120, 0, 100)
 
         // mettre la camera par defaut a cette emplacement
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(25.0F))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(48.8534, 2.3488)))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(47.35, 2.2)))
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(6.0f))
 
         controller.getAll(this)
 
-        mMap.setOnMarkerClickListener{ marker ->
+        mMap.setOnMarkerClickListener { marker ->
             controller.getById(marker.tag.toString(), this)
             true
         }
     }
 
-    fun displayMarkers(fireworks : ArrayList<Firework>){
-        for(f in fireworks){
+    fun displayMarkers(fireworks: ArrayList<Firework>) {
+        for (f in fireworks) {
             mMap.addMarker(MarkerOptions()
                     .position(LatLng(f.latitude, f.longitude))
                     .title(f.title)
@@ -143,7 +163,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
     }
 
-    fun openDetail(firework: Firework){
+    fun openDetail(firework: Firework) {
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
@@ -151,5 +171,51 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         textViewDescription.text = firework.description
         sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
     }
+
+    private fun allerALaPositionActuelle() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLatitude, myLongitude), 12.0f), 1500, null)
+    }
+
+    /*
+       _____ _____   _____   _                 _ _           _   _
+      / ____|  __ \ / ____| | |               | (_)         | | (_)
+     | |  __| |__) | (___   | | ___   ___ __ _| |_ ___  __ _| |_ _  ___  _ __
+     | | |_ |  ___/ \___ \  | |/ _ \ / __/ _` | | / __|/ _` | __| |/ _ \| '_ \
+     | |__| | |     ____) | | | (_) | (_| (_| | | \__ \ (_| | |_| | (_) | | | |
+      \_____|_|    |_____/  |_|\___/ \___\__,_|_|_|___/\__,_|\__|_|\___/|_| |_|
+
+     */
+    private fun lancerLaRechercheDeLaLocalisation() {
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+        Log.d("TAG", "" + myLatitude + " azerty" + myLongitude)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            return
+        } else {
+            val myLocation = locationManager?.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+            if (myLocation != null) {
+                myLatitude = myLocation!!.latitude
+                myLongitude = myLocation!!.longitude
+            }
+            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, locationListener);
+            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener);
+        }
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(myLocation: Location) {
+            myLatitude = myLocation.latitude
+            myLongitude = myLocation.longitude
+            if (addressTrouvee) {
+                Log.d("TAG", "Position : " + myLatitude + " ; " + myLongitude)
+                addressTrouvee = false
+            }
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
 
 }
