@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrawerActivity">
+
+
+    <!-- slide up panel -->
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="50dp"
+        sothree:umanoFadeColor="@android:color/transparent"
+        sothree:umanoClipPanel="false"
+        sothree:umanoOverlay ="true"
+        sothree:umanoShadowHeight="0dp">
+
+        <!-- slide up panel - BACK -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Ici le fragment pour afficher la map google -->
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".DrawerActivity" />
+
+            <!-- ce qui sera affiché au dessus de la map -->
+            <include layout="@layout/slide_up_layout_back"/>
+
+        </FrameLayout>
+
+        <!-- slide up panel - FRONT -->
+        <include layout="@layout/slide_up_layout_front"/>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+
