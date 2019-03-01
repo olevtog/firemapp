@@ -5,16 +5,20 @@ import android.os.Bundle
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.location.Geocoder
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.AddressService
 import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.text.SimpleDateFormat
+import kotlin.collections.ArrayList
+import android.R.string.cancel
+import android.content.Intent
+import com.valette.defossez.firemapp.adapter.AddressAdapter
 
 
 class FormAddFireworkActivity : AppCompatActivity() {
@@ -22,6 +26,10 @@ class FormAddFireworkActivity : AppCompatActivity() {
     val cal = Calendar.getInstance()
     val controller = FireworksController()
     val addressService = AddressService(this)
+    var addresses = ArrayList<String>()
+    val ctx = this
+    var timer = Timer()
+    val DELAY: Long = 500
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,23 +38,37 @@ class FormAddFireworkActivity : AppCompatActivity() {
         submit.setOnClickListener {
             validate()
         }
+        var adapter = AddressAdapter(this, R.layout.dropdown, addresses)
+        inputAddress.threshold = 1
+        inputAddress.setAdapter<AddressAdapter>(adapter)
 
         inputAddress.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                Handler().postDelayed({
-                    if ( addressService.getAddresses(s.toString(), 3).isNotEmpty()) {
-                        var res = addressService.getAddresses(s.toString(), 3)[0]
-                    }
-                }, 2000)
+            override fun afterTextChanged(text : Editable?) {
+                if(text.toString().length > 3){
+                    timer.cancel()
+                    timer = Timer()
+                    timer.schedule(
+                            object : TimerTask() {
+                                override fun run() {
+                                    ctx.runOnUiThread {
+                                        if (text.toString().isNotEmpty() && addressService.getAddresses(text.toString(), 3).isNotEmpty()) {
+                                            var address = addressService.getAddresses(text.toString(), 5)[0].getAddressLine(0)
+                                            adapter.clear()
+                                            adapter.add(address)
+                                        }
+                                    }
 
+                                }
+                            },
+                            DELAY
+                    )
+                }else{
+                    adapter.clear()
+                }
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
     }
@@ -57,11 +79,11 @@ class FormAddFireworkActivity : AppCompatActivity() {
         var date = SimpleDateFormat("dd/MM/yy HH:mm").parse("${inputDate.text}  ${inputTime.text}")
         var title = inputTitle.text
         var description = inputDescription.text
-        Toast.makeText(this," $address $date $title $description", Toast.LENGTH_SHORT).show()
         controller.create(Firework("", title.toString(), description.toString(), res.latitude, res.longitude, res.getAddressLine(0), date))
+        finish()
     }
 
-    private fun initDateTimePickers(){
+    private fun initDateTimePickers() {
         val date = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)

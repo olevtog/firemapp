@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <!-- Ici le fragment pour afficher la map google -->
+            <!-- Ici le fragment pour afficher la map_aubergine google -->
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/map"
@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 tools:context=".DrawerActivity" />
 
-            <!-- ce qui sera affiché au dessus de la map -->
+            <!-- ce qui sera affiché au dessus de la map_aubergine -->
             <include layout="@layout/slide_up_layout_back"/>
 
         </FrameLayout>

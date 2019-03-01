@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" >
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/inputAddress"
             android:layout_width="268dp"
             android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusableInTouchMode="false"
             android:ems="10"
             android:hint="Date"
             android:inputType="date" />
@@ -85,6 +86,8 @@
             android:id="@+id/inputTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
             android:ems="10"
             android:hint="Horaire"
             android:inputType="time" />

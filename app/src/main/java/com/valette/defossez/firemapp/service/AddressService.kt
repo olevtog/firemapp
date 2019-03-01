@@ -12,6 +12,7 @@ class AddressService(context : Context){
 
     fun getAddresses(address : String, size : Int) : List<Address> {
         return geocoder.getFromLocationName(address,size)
+
     }
 
 }

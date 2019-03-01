@@ -10,10 +10,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -22,6 +18,7 @@ import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
+import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
@@ -51,7 +48,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        // pour afficher ma map
+        // pour afficher ma map_aubergine
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -66,10 +63,18 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         lancerLaRechercheDeLaLocalisation()
 
-        //Pour mettre la map quand on clique sur le bouton
+        //Pour mettre la map_aubergine quand on clique sur le bouton
         boutonLocalisation.setOnClickListener {
             allerALaPositionActuelle()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        try{
+            mMap.clear()
+            controller.getAll(this)
+        } catch (e : Exception){}
     }
 
 
@@ -123,8 +128,8 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
+     * Manipulates the map_aubergine once available.
+     * This callback is triggered when the map_aubergine is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
      * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
@@ -133,6 +138,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_silver))
 
         // pour supprimer la barre en bas pour afficher la direction et un lien vers maps
         mMap.uiSettings.isMapToolbarEnabled = false
@@ -211,7 +217,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 addressTrouvee = false
             }
         }
-
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
