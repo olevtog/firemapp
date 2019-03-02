@@ -6,93 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".FormAddFireworkActivity">
 
-    <TextView
-        android:id="@+id/header"
+
+    <RelativeLayout
+        android:id="@+id/layout_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Ajouter un feu d'artifice"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textSize="28dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_address"
+
+        <RelativeLayout
+            android:id="@+id/layout_address_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/inputAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:ems="10"
+                    android:hint="Adresse"
+                    android:inputType="textPostalAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/input_layout_address"
+                android:layout_alignEnd="@id/input_layout_address"
+                android:layout_alignBottom="@id/input_layout_address"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/layout_address_2"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/btn_accent_rount"
+            android:padding="15dp"
+            android:src="@drawable/ic_my_location" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_datetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" >
-
-        <AutoCompleteTextView
-            android:id="@+id/inputAddress"
-            android:layout_width="268dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Adresse"
-            android:inputType="textPostalAddress"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:text=" + "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_date"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_address"  >
+        app:layout_constraintTop_toBottomOf="@+id/layout_address">
 
-        <EditText
-            android:id="@+id/inputDate"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/inputDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:ems="10"
+                android:focusableInTouchMode="false"
+                android:hint="Date"
+                android:inputType="date" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusableInTouchMode="false"
-            android:ems="10"
-            android:hint="Date"
-            android:inputType="date" />
 
-    </android.support.design.widget.TextInputLayout>
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/input_layout_date">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_time"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_address">
+            <EditText
+                android:id="@+id/inputTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:ems="10"
+                android:focusableInTouchMode="false"
+                android:hint="Horaire"
+                android:inputType="time" />
 
-        <EditText
-            android:id="@+id/inputTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusableInTouchMode="false"
-            android:ems="10"
-            android:hint="Horaire"
-            android:inputType="time" />
+        </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_title"
@@ -102,15 +126,15 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_date"  >
+        app:layout_constraintTop_toBottomOf="@+id/layout_datetime">
 
-    <EditText
-        android:id="@+id/inputTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Titre"/>
+        <EditText
+            android:id="@+id/inputTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Titre"
+            android:inputType="textPersonName" />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -123,17 +147,17 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_title"  >
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_title">
 
-    <EditText
-        android:id="@+id/inputDescription"
-        android:layout_width="match_parent"
-        android:layout_height="146dp"
-        android:ems="10"
-        android:minLines="1"
-        android:maxLines="5"
-        android:inputType="textMultiLine"
-        android:hint="Caractéristiques techniques"/>
+        <EditText
+            android:id="@+id/inputDescription"
+            android:layout_width="match_parent"
+            android:layout_height="146dp"
+            android:ems="10"
+            android:hint="Caractéristiques techniques"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:minLines="1" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -141,9 +165,12 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_accent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="Ajouter l'évènement"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

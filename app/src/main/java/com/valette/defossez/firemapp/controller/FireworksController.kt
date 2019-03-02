@@ -1,9 +1,8 @@
 package com.valette.defossez.firemapp.controller
 
-import com.google.firebase.database.FirebaseDatabase
 import com.valette.defossez.firemapp.entity.Firework
 import com.google.firebase.firestore.FirebaseFirestore
-import com.valette.defossez.firemapp.DrawerActivity
+import com.valette.defossez.firemapp.HomeActivity
 
 
 class FireworksController {
@@ -16,7 +15,7 @@ class FireworksController {
         newFireworkRef.set(firework)
     }
 
-    fun getAll(activity : DrawerActivity) {
+    fun getAll(activity : HomeActivity) {
         var fireworks = ArrayList<Firework>()
         db.collection("fireworks").get()
                 .addOnSuccessListener { result ->
@@ -27,7 +26,7 @@ class FireworksController {
                 }
     }
 
-    fun getById(id : String, activity : DrawerActivity){
+    fun getById(id : String, activity : HomeActivity){
         db.collection("fireworks").document(id).get()
                 .addOnSuccessListener { document ->
                 if (document != null) {

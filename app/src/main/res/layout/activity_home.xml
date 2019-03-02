@@ -18,10 +18,10 @@
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:background="@color/colorFond"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="@color/primary"
         app:headerLayout="@layout/nav_header_draver"
         app:menu="@menu/activity_draver_drawer" />
 

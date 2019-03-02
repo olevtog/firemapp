@@ -12,7 +12,7 @@
         android:layout_margin="5dp"
         android:layout_width="50dp"
         android:layout_height="8dp"
-        android:background="@drawable/slideup_up"
+        android:background="@drawable/slideup_up_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

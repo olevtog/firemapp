@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DrawerActivity">
+    tools:context=".HomeActivity">
 
 
     <!-- slide up panel -->
@@ -31,9 +31,10 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:fitsSystemWindows="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".DrawerActivity" />
+                tools:context=".HomeActivity" />
 
             <!-- ce qui sera affiché au dessus de la map_aubergine -->
             <include layout="@layout/slide_up_layout_back"/>

@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
-import kotlinx.android.synthetic.main.activity_draver.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 
-class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     private lateinit var mMap: GoogleMap
@@ -44,7 +44,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_draver)
+        setContentView(R.layout.activity_home)
 
         nav_view.setNavigationItemSelectedListener(this)
 

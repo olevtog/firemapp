@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 import android.R.string.cancel
 import android.content.Intent
+import android.view.View
 import com.valette.defossez.firemapp.adapter.AddressAdapter
 
 
@@ -51,10 +52,12 @@ class FormAddFireworkActivity : AppCompatActivity() {
                             object : TimerTask() {
                                 override fun run() {
                                     ctx.runOnUiThread {
+                                        progressBar.visibility = View.VISIBLE
                                         if (text.toString().isNotEmpty() && addressService.getAddresses(text.toString(), 3).isNotEmpty()) {
                                             var address = addressService.getAddresses(text.toString(), 5)[0].getAddressLine(0)
                                             adapter.clear()
                                             adapter.add(address)
+                                            progressBar.visibility = View.GONE
                                         }
                                     }
 
