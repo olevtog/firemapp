@@ -133,6 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:text="Feu d'artifice"
             android:hint="Titre"
             android:inputType="textPersonName" />
 
@@ -154,6 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="146dp"
             android:ems="10"
+            android:text="Un nouveau feu d'artifice"
             android:hint="Caractéristiques techniques"
             android:inputType="textMultiLine"
             android:maxLines="5"
