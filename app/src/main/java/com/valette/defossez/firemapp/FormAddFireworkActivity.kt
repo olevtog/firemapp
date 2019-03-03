@@ -5,32 +5,30 @@ import android.os.Bundle
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.AddressService
 import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
-import android.R.string.cancel
-import android.content.Intent
 import android.view.View
 import com.valette.defossez.firemapp.adapter.AddressAdapter
 
 
 class FormAddFireworkActivity : AppCompatActivity() {
 
-    val cal = Calendar.getInstance()
-    val controller = FireworksController()
-    val addressService = AddressService(this)
-    var addresses = ArrayList<String>()
     val ctx = this
     var timer = Timer()
     val DELAY: Long = 500
+
+    val controller = FireworksController()
+
+    val addressService = AddressService(this)
+    val cal = Calendar.getInstance()
+    var addresses = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +43,7 @@ class FormAddFireworkActivity : AppCompatActivity() {
 
         inputAddress.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(text : Editable?) {
-                if(text.toString().length > 3){
-                    timer.cancel()
-                    timer = Timer()
-                    timer.schedule(
-                            object : TimerTask() {
-                                override fun run() {
-                                    ctx.runOnUiThread {
-                                        progressBar.visibility = View.VISIBLE
-                                        if (text.toString().isNotEmpty() && addressService.getAddresses(text.toString(), 3).isNotEmpty()) {
-                                            var address = addressService.getAddresses(text.toString(), 5)[0].getAddressLine(0)
-                                            adapter.clear()
-                                            adapter.add(address)
-                                            progressBar.visibility = View.GONE
-                                        }
-                                    }
-
-                                }
-                            },
-                            DELAY
-                    )
-                }else{
-                    adapter.clear()
-                }
+                getAddressFromInput(text.toString(), adapter)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -76,13 +52,30 @@ class FormAddFireworkActivity : AppCompatActivity() {
 
     }
 
-    fun validate() {
-        var address = inputAddress.text
-        var res = addressService.getAddresses(address.toString(), 3)[0]
+    private fun validate() {
+        if(inputAddress.text.isEmpty()){
+            input_layout_address.error = "Veuillez entrer une adresse valide"
+            return
+        }
+        var addresses = addressService.getAddresses(inputAddress.text.toString(), 1)
+        if(addresses.isEmpty()){
+            input_layout_address.error = "Veuillez entrer une adresse valide, adresse inconnue"
+            return
+        }
+        var address = addresses[0]
+
+        if(inputDate.text.isEmpty()){
+            input_layout_date.error = "Veuillez entrer une date"
+            return
+        }
+        if(inputTime.text.isEmpty()){
+            input_layout_time.error = "Veuillez entrer un horaire"
+            return
+        }
         var date = SimpleDateFormat("dd/MM/yy HH:mm").parse("${inputDate.text}  ${inputTime.text}")
         var title = inputTitle.text
         var description = inputDescription.text
-        controller.create(Firework("", title.toString(), description.toString(), res.latitude, res.longitude, res.getAddressLine(0), date))
+        controller.create(Firework("", title.toString(), description.toString(), address.latitude, address.longitude, address.getAddressLine(0), date))
         finish()
     }
 
@@ -121,5 +114,31 @@ class FormAddFireworkActivity : AppCompatActivity() {
         val format = "HH:mm"
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         inputTime.setText(sdf.format(cal.time))
+    }
+
+    private fun getAddressFromInput(text : String, adapter: ArrayAdapter<String>){
+        progressBar.visibility = View.VISIBLE
+        if(text.length > 3){
+            timer.cancel()
+            timer = Timer()
+            timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            ctx.runOnUiThread {
+                                if (text.isNotEmpty() && addressService.getAddresses(text, 3).isNotEmpty()) {
+                                    var address = addressService.getAddresses(text, 5)[0].getAddressLine(0)
+                                    adapter.clear()
+                                    adapter.add(address)
+                                }
+                                progressBar.visibility = View.GONE
+                            }
+
+                        }
+                    },
+                    DELAY
+            )
+        }else{
+            adapter.clear()
+        }
     }
 }
