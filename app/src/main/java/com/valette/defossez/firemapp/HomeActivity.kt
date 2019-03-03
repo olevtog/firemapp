@@ -108,7 +108,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_gallery -> {
-
+                val intent = Intent(this, FavoriteActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_share -> {
 
