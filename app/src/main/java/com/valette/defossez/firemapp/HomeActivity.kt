@@ -15,12 +15,14 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
+import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
@@ -35,6 +37,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var mMap: GoogleMap
     private val controller = FireworksController()
+    private lateinit var currentMarker : Marker
+    private var favoriteState : Boolean = false
 
     private var addressTrouvee = true
     private var myLatitude: Double = 0.0
@@ -54,7 +58,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mapFragment.getMapAsync(this)
 
         // Mettre un point d'arret sur le sliding
-        sliding_layout.anchorPoint = .3f
+        sliding_layout.anchorPoint = .4f
 
         // Pour ouvrir le menu
         buttonOpenMenu.setOnClickListener {
@@ -155,27 +159,52 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         mMap.setOnMarkerClickListener { marker ->
             controller.getById(marker.tag.toString(), this)
+            currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+            currentMarker = marker
             true
         }
     }
 
     fun displayMarkers(fireworks: ArrayList<Firework>) {
         for (f in fireworks) {
-            mMap.addMarker(MarkerOptions()
-                    .position(LatLng(f.latitude, f.longitude))
-                    .title(f.title)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                    .tag = f.id
+            var options = MarkerOptions()
+            options.position(LatLng(f.latitude, f.longitude))
+            options.title(f.title)
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            currentMarker = mMap.addMarker(options)
+            currentMarker.tag = f.id
         }
     }
 
     fun openDetail(firework: Firework) {
+        favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id!!)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
         textViewTitle.text = firework.title
         textViewDescription.text = firework.description
         sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+        if(favoriteState){
+            favorite.setBackgroundResource(R.drawable.ic_favorite)
+        } else {
+            favorite.setBackgroundResource(R.drawable.ic_favorite_border)
+        }
+        favorite.setOnClickListener{
+            if(favoriteState){
+                FiremappApp.database.favoriteController().delete(firework.id!!)
+                favorite.setBackgroundResource(R.drawable.ic_favorite_border)
+            } else {
+                FiremappApp.database.favoriteController().insert(Favorite(firework.id!!))
+                favorite.setBackgroundResource(R.drawable.ic_favorite)
+            }
+        }
+        route.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
     }
 
     private fun allerALaPositionActuelle() {

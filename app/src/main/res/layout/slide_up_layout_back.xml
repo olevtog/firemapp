@@ -16,6 +16,8 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -39,7 +41,7 @@
             android:layout_centerHorizontal="true"
             android:hint="Recherche"
             android:background="@android:color/transparent"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/secondary_text"
             android:inputType="textPersonName"
             android:textSize="20dp" />
 

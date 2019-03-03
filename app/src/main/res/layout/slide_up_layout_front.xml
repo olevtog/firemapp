@@ -2,14 +2,13 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/background_slide_up"
     android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/buttonMonter"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
         android:layout_width="50dp"
         android:layout_height="8dp"
         android:background="@drawable/slideup_up_btn"
@@ -20,9 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_margin="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -41,18 +38,17 @@
             <ImageButton
                 android:id="@+id/imageButton"
                 android:scaleType="fitXY"
-                android:layout_marginRight="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@android:color/transparent"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+                app:srcCompat="@drawable/ic_event" />
 
             <TextView
                 android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="24dp"
+                android:textSize="20dp"
+                android:layout_marginStart="8dp"
                 android:text="14/07/2018, 23h" />
 
             <ImageView
@@ -62,23 +58,20 @@
                 android:src="@android:color/transparent" />
 
             <ImageButton
-                android:id="@+id/imageBsqfdutfdton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/favorite"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:background="@android:color/transparent"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+                android:background="@drawable/ic_favorite_border"
+                android:scaleType="fitXY"/>
 
             <ImageButton
-                android:id="@+id/imageButfdsfdton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/route"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:background="@android:color/transparent"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:drawable/ic_lock_idle_lock" />
-
+                android:background="@drawable/ic_directions"
+                android:scaleType="fitXY"/>
 
         </LinearLayout>
 
@@ -87,29 +80,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="15dp"
-
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageButton
-                android:id="@+id/imaghgfeButton"
-                android:scaleType="fitXY"
-                android:layout_marginRight="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/transparent"
-                app:srcCompat="@android:drawable/title_bar" />
-
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="30dp"
+                android:textSize="24dp"
+                android:textColor="@color/primary_text"
+                android:padding="8dp"
                 android:text="Feu Artifice de la fête nationale" />
 
 
@@ -130,17 +115,16 @@
                 android:id="@+id/imageButtonhg"
                 android:scaleType="fitXY"
                 android:layout_marginRight="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/transparent"
-                app:srcCompat="@android:drawable/ic_menu_compass" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_place"/>
 
             <TextView
                 android:id="@+id/textViewAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:text="Lille, champ de Mars" />
 
 
@@ -161,8 +145,8 @@
                 android:id="@+id/imageButtdfonhg"
                 android:scaleType="fitXY"
                 android:layout_marginRight="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@android:color/transparent"
                 app:srcCompat="@android:drawable/ic_dialog_info" />
 
@@ -171,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:text="Vous trouverez toutes les informations sur notre site si vous souhaitez vous y rendre" />
 
 

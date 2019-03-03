@@ -42,7 +42,8 @@
         </FrameLayout>
 
         <!-- slide up panel - FRONT -->
-        <include layout="@layout/slide_up_layout_front"/>
+        <include layout="@layout/slide_up_layout_front"
+            android:visibility="invisible"/>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
