@@ -1,6 +1,7 @@
 package com.valette.defossez.firemapp
 
 import android.Manifest
+import android.content.Context.LOCATION_SERVICE
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -24,6 +25,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
+import com.valette.defossez.firemapp.service.AddressService
+import com.valette.defossez.firemapp.service.LocationService
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
@@ -34,17 +37,11 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-
     private lateinit var mMap: GoogleMap
+    private lateinit var locationService: LocationService
     private val controller = FireworksController()
-    private lateinit var currentMarker : Marker
-    private var favoriteState : Boolean = false
-
-    private var addressTrouvee = true
-    private var myLatitude: Double = 0.0
-    private var myLongitude: Double = 0.0
-    private var locationManager: LocationManager? = null
-
+    private lateinit var currentMarker: Marker
+    private var favoriteState: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,20 +62,23 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.openDrawer(GravityCompat.START)
         }
 
-        lancerLaRechercheDeLaLocalisation()
+        //Lancer la recherche de la position
+        locationService = LocationService()
+        locationService.lancerLaRechercheDeLaLocalisation(this)
 
-        //Pour mettre la map_aubergine quand on clique sur le bouton
+        //Aller a la position actuelle
         boutonLocalisation.setOnClickListener {
-            allerALaPositionActuelle()
+            allerANotrePosition()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        try{
+        try {
             mMap.clear()
             controller.getAll(this)
-        } catch (e : Exception){}
+        } catch (e: Exception) {
+        }
     }
 
 
@@ -185,13 +185,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         textViewTitle.text = firework.title
         textViewDescription.text = firework.description
         sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
-        if(favoriteState){
+        if (favoriteState) {
             favorite.setBackgroundResource(R.drawable.ic_favorite)
         } else {
             favorite.setBackgroundResource(R.drawable.ic_favorite_border)
         }
-        favorite.setOnClickListener{
-            if(favoriteState){
+        favorite.setOnClickListener {
+            if (favoriteState) {
                 FiremappApp.database.favoriteController().delete(firework.id!!)
                 favorite.setBackgroundResource(R.drawable.ic_favorite_border)
             } else {
@@ -208,48 +208,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun allerALaPositionActuelle() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLatitude, myLongitude), 12.0f), 1500, null)
-    }
 
-    /*
-       _____ _____   _____   _                 _ _           _   _
-      / ____|  __ \ / ____| | |               | (_)         | | (_)
-     | |  __| |__) | (___   | | ___   ___ __ _| |_ ___  __ _| |_ _  ___  _ __
-     | | |_ |  ___/ \___ \  | |/ _ \ / __/ _` | | / __|/ _` | __| |/ _ \| '_ \
-     | |__| | |     ____) | | | (_) | (_| (_| | | \__ \ (_| | |_| | (_) | | | |
-      \_____|_|    |_____/  |_|\___/ \___\__,_|_|_|___/\__,_|\__|_|\___/|_| |_|
-
-     */
-    private fun lancerLaRechercheDeLaLocalisation() {
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
-        Log.d("TAG", "" + myLatitude + " azerty" + myLongitude)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            return
+    private fun allerANotrePosition() {
+        if (locationService.addressTrouvee) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.myLatitude, locationService.myLongitude), 12.0f), 1500, null)
         } else {
-            val myLocation = locationManager?.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
-            if (myLocation != null) {
-                myLatitude = myLocation!!.latitude
-                myLongitude = myLocation!!.longitude
-            }
-            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, locationListener);
-            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener);
+            Toast.makeText(this, "Attente de votre position...", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(myLocation: Location) {
-            myLatitude = myLocation.latitude
-            myLongitude = myLocation.longitude
-            if (addressTrouvee) {
-                Log.d("TAG", "Position : " + myLatitude + " ; " + myLongitude)
-                addressTrouvee = false
-            }
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
     }
 
 

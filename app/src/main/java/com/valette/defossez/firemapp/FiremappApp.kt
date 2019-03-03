@@ -13,6 +13,8 @@ class FiremappApp : Application() {
      */
     companion object {
         lateinit var database: FiremappDatabase
+        var myLongitude = 0.0
+        var myLatitude = 0.0
     }
 
     override fun onCreate() {
