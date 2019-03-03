@@ -179,7 +179,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun openDetail(firework: Firework) {
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id!!)
-        System.out.println(favoriteState)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
