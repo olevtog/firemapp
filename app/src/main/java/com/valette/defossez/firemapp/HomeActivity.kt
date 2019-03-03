@@ -179,6 +179,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun openDetail(firework: Firework) {
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id!!)
+        System.out.println(favoriteState)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
@@ -198,6 +199,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 FiremappApp.database.favoriteController().insert(Favorite(firework.id!!))
                 favorite.setBackgroundResource(R.drawable.ic_favorite)
             }
+            favoriteState = !favoriteState
         }
         route.setOnClickListener {
             val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)

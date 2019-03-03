@@ -20,7 +20,7 @@ interface FavoriteController {
     @Insert
     fun insert(favorite: Favorite)
 
-    @Query("SELECT * FROM favorites WHERE firework = :firework ")
-    fun delete(firework: String) : Boolean
+    @Query("DELETE FROM favorites WHERE firework = :firework ")
+    fun delete(firework: String)
 
 }
