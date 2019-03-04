@@ -1,21 +1,24 @@
 package com.valette.defossez.firemapp.controller
 
+import android.app.Activity
 import com.valette.defossez.firemapp.entity.Firework
 import com.google.firebase.firestore.FirebaseFirestore
+import com.valette.defossez.firemapp.FavoriteActivity
 import com.valette.defossez.firemapp.HomeActivity
+import com.valette.defossez.firemapp.adapter.FavoriteAdapter
 
 
 class FireworksController {
 
-        private val db = FirebaseFirestore.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
-    fun create(firework: Firework){
+    fun create(firework: Firework) {
         val newFireworkRef = db.collection("fireworks").document()
         firework.id = newFireworkRef.id
         newFireworkRef.set(firework)
     }
 
-    fun getAll(activity : HomeActivity) {
+    fun getAll(activity: HomeActivity) {
         var fireworks = ArrayList<Firework>()
         db.collection("fireworks").get()
                 .addOnSuccessListener { result ->
@@ -26,14 +29,25 @@ class FireworksController {
                 }
     }
 
-    fun getById(id : String, activity : HomeActivity){
+    fun getByIdMap(id: String, activity: HomeActivity) {
         db.collection("fireworks").document(id).get()
                 .addOnSuccessListener { document ->
-                if (document != null) {
-                    activity.openDetail(document.toObject(Firework::class.java)!!)
-                } else {
-                    print("err")
-            }
-        }
+                    if (document != null) {
+                        activity.openDetail(document.toObject(Firework::class.java)!!)
+                    } else {
+                        print("err")
+                    }
+                }
+    }
+
+    fun getByIdFavorite(id: String, activity: FavoriteAdapter, holder: FavoriteAdapter.ViewHolder, position: Int) {
+        db.collection("fireworks").document(id).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        activity.openDetail(document.toObject(Firework::class.java)!!, holder, position)
+                    } else {
+                        print("err")
+                    }
+                }
     }
 }

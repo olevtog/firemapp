@@ -13,6 +13,10 @@ class FavoriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
 
+        completeRecyclerView()
+    }
+
+    private fun completeRecyclerView() {
         val rv = findViewById<RecyclerView>(R.id.recyclerFavorite)
         rv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         val users = ArrayList<Long>()

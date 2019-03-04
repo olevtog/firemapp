@@ -1,6 +1,7 @@
 package com.valette.defossez.firemapp
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context.LOCATION_SERVICE
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -81,14 +82,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
 
-    /*
-      _ __ ___   ___ _ __  _   _
-     | '_ ` _ \ / _ \ '_ \| | | |
-     | | | | | |  __/ | | | |_| |
-     |_| |_| |_|\___|_| |_|\__,_|
+        }
+    }
 
-    */
+/*
+  _ __ ___   ___ _ __  _   _
+ | '_ ` _ \ / _ \ '_ \| | | |
+ | | | | | |  __/ | | | |_| |
+ |_| |_| |_|\___|_| |_|\__,_|
+
+*/
 
     // on surcharge le bouton retour pour le menu, afin qu'il se ferme
     override fun onBackPressed() {
@@ -120,13 +126,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    /*
-      _ __ ___   __ _ _ __
-     | '_ ` _ \ / _` | '_ \
-     | | | | | | (_| | |_) |
-     |_| |_| |_|\__,_| .__/
-                     |_|
-     */
+/*
+  _ __ ___   __ _ _ __
+ | '_ ` _ \ / _` | '_ \
+ | | | | | | (_| | |_) |
+ |_| |_| |_|\__,_| .__/
+                 |_|
+ */
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         return true
@@ -159,7 +165,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         controller.getAll(this)
 
         mMap.setOnMarkerClickListener { marker ->
-            controller.getById(marker.tag.toString(), this)
+            controller.getByIdMap(marker.tag.toString(), this)
             currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
             currentMarker = marker
