@@ -1,6 +1,7 @@
 package com.valette.defossez.firemapp
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -12,6 +13,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import android.content.Intent
 import android.net.Uri
+import android.view.LayoutInflater
+import android.widget.SeekBar
 import android.widget.Toast
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -21,6 +24,8 @@ import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.LocationService
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
+import kotlinx.android.synthetic.main.dialog_filter.*
+import kotlinx.android.synthetic.main.dialog_filter.view.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
 import java.text.SimpleDateFormat
@@ -38,7 +43,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
     private var favoriteState: Boolean = false
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +75,41 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Aller a la position actuelle
         boutonLocalisation.setOnClickListener {
             allerANotrePosition()
+        }
+    }
+
+    private fun displayDialogFilter() {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null)
+        val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+                .setTitle("Filtrer")
+        //show dialog
+        val mAlertDialog = mBuilder.show()
+
+        mAlertDialog.seekBarDate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                mAlertDialog.date.text = "Progress : $progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                // Write code to perform some action when touch is started.
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                // Write code to perform some action when touch is stopped.
+                Toast.makeText(this@HomeActivity, "Progress is " + seekBar.progress + "%", Toast.LENGTH_SHORT).show()
+            }
+        })
+        
+        mDialogView.dialogLoginBtn.setOnClickListener {
+            //dismiss dialog
+            mAlertDialog.dismiss()
+            //get text from EditTexts of custom layout
+            val name = mDialogView.seekBarDate.progress
+        }
+
+        mDialogView.dialogCancelBtn.setOnClickListener {
+            mAlertDialog.dismiss()
         }
     }
 
@@ -112,8 +151,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, FavoriteActivity::class.java)
                 startActivityForResult(intent, 1)
             }
+            R.id.nav_filter -> {
+                displayDialogFilter()
+            }
             R.id.nav_share -> {
-
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)

@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_favorite"
             android:title="Mes favoris" />
         <item
+            android:id="@+id/nav_filter"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Filtrer" />
+        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
             android:title="A propos" />
