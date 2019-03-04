@@ -4,8 +4,13 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.valette.defossez.firemapp.adapter.FavoriteAdapter
+import android.content.Intent
+
+
 
 class FavoriteActivity : AppCompatActivity() {
 
@@ -21,7 +26,17 @@ class FavoriteActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         val users = ArrayList<Long>()
         var allFavFireworks = FiremappApp.database.favoriteController().getAll()
-        var adapter = FavoriteAdapter(allFavFireworks)
+        var adapter = FavoriteAdapter(allFavFireworks, this)
         rv.adapter = adapter
     }
+
+    fun changeActivity() {
+        Log.d("oky","oky")
+        val returnIntent = Intent()
+        returnIntent.putExtra("result", "valuuuue")
+        setResult(RESULT_OK, returnIntent)
+        finish()
+        Log.d("oky2","oky2")
+    }
+
 }

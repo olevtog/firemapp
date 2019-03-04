@@ -82,12 +82,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-
-        }
-    }
-
 /*
   _ __ ___   ___ _ __  _   _
  | '_ ` _ \ / _ \ '_ \| | | |
@@ -115,7 +109,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_gallery -> {
                 val intent = Intent(this, FavoriteActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, 1)
             }
             R.id.nav_share -> {
 
@@ -224,5 +218,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+            }
+        }
+    }
 
 }

@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/background_search"
         android:padding="10dp">
 
         <TextView
@@ -23,6 +24,15 @@
             android:layout_height="wrap_content"
             android:text="Occupation"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <ImageButton
+            android:id="@+id/favorite"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:background="@drawable/ic_favorite"
+            android:scaleType="fitXY"/>
+
     </LinearLayout>
 
 </LinearLayout>

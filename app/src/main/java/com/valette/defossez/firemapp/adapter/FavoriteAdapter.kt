@@ -1,28 +1,51 @@
 package com.valette.defossez.firemapp.adapter
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.valette.defossez.firemapp.FavoriteActivity
+import com.valette.defossez.firemapp.FiremappApp
 import com.valette.defossez.firemapp.R
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
+import kotlinx.android.synthetic.main.favorite_firework.view.*
 
-class FavoriteAdapter(val userList: List<Favorite>) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+class FavoriteAdapter(val favList: List<Favorite>, val context: Context) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     private val controller = FireworksController()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var idFirework = userList[position].firework
+        var idFirework = favList[position].firework
+
+        //display favorite
         controller.getByIdFavorite(idFirework, this, holder, position)
+
+        holder.listView.setOnClickListener {
+            var fa = FavoriteActivity()
+            fa.changeActivity()
+        }
+
+        var favoriteState = true;
+        holder.listView.favorite.setOnClickListener {
+            if (favoriteState) {
+                FiremappApp.database.favoriteController().delete(idFirework)
+                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite_border)
+            } else {
+                FiremappApp.database.favoriteController().insert(Favorite(idFirework))
+                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite)
+            }
+            favoriteState = !favoriteState
+        }
     }
 
 
     fun openDetail(firework: Firework, holder: ViewHolder, position: Int) {
-        holder?.txtName?.text = firework.title
-        holder?.txtLocalisation?.text = firework.address
+        holder.listView.textName.text = firework.title
+        holder.listView.textLocalisation.text = firework.address
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,13 +54,10 @@ class FavoriteAdapter(val userList: List<Favorite>) : RecyclerView.Adapter<Favor
     }
 
     override fun getItemCount(): Int {
-        return userList.size
+        return favList.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtName = itemView.findViewById<TextView>(R.id.textName)
-        val txtLocalisation = itemView.findViewById<TextView>(R.id.textLocalisation)
+    class ViewHolder(val listView: View) : RecyclerView.ViewHolder(listView)
 
-    }
 
 }
