@@ -37,6 +37,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var locationService: LocationService
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
+    private var markers: HashMap<String, Marker> = HashMap()
     private var favoriteState: Boolean = false
 
 
@@ -78,6 +79,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
         try {
             mMap.clear()
+            markers.clear()
             controller.getAll(this)
         } catch (e: Exception) {
         }
@@ -176,6 +178,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             currentMarker = mMap.addMarker(options)
             currentMarker.tag = f.id
+            markers.put(f.id, currentMarker)
         }
     }
 
@@ -224,8 +227,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
+                val id = data.extras.getString("id")
                 val latitude = data.extras.getDouble("latitude")
                 val longitude = data.extras.getDouble("longitude")
+                controller.getByIdMap(markers[id]!!.tag.toString(), this)
+                currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                markers[id]!!.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                currentMarker = markers[id]!!
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), 1, null)
             }
         }

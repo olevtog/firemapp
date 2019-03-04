@@ -27,12 +27,13 @@ class FavoriteActivity : AppCompatActivity() {
         rv.adapter = adapter
     }
 
-    fun changeActivity(activity : Activity, latitude: Double, longitude: Double) {
+    fun finish(id: String, latitude: Double, longitude: Double) {
         val intent = Intent()
+        intent.putExtra("id", id)
         intent.putExtra("latitude", latitude)
         intent.putExtra("longitude", longitude)
-        activity.setResult(RESULT_OK, intent)
-        activity.finish()
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
 }
