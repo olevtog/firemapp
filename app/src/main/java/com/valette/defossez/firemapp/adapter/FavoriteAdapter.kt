@@ -1,5 +1,6 @@
 package com.valette.defossez.firemapp.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -14,7 +15,7 @@ import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
 import kotlinx.android.synthetic.main.favorite_firework.view.*
 
-class FavoriteAdapter(val favList: List<Favorite>, val context: Context) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+class FavoriteAdapter(val favList: List<Favorite>, val activity: Activity) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     private val controller = FireworksController()
 
@@ -23,11 +24,6 @@ class FavoriteAdapter(val favList: List<Favorite>, val context: Context) : Recyc
 
         //display favorite
         controller.getByIdFavorite(idFirework, this, holder, position)
-
-        holder.listView.setOnClickListener {
-            var fa = FavoriteActivity()
-            fa.changeActivity()
-        }
 
         var favoriteState = true;
         holder.listView.favorite.setOnClickListener {
@@ -46,6 +42,10 @@ class FavoriteAdapter(val favList: List<Favorite>, val context: Context) : Recyc
     fun openDetail(firework: Firework, holder: ViewHolder, position: Int) {
         holder.listView.textName.text = firework.title
         holder.listView.textLocalisation.text = firework.address
+        holder.listView.setOnClickListener {
+            var fa = FavoriteActivity()
+            fa.changeActivity(activity, firework.latitude, firework.longitude)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

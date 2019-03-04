@@ -221,11 +221,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
+                val latitude = data.extras.getDouble("latitude")
+                val longitude = data.extras.getDouble("longitude")
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), 1, null)
             }
         }
     }
