@@ -29,11 +29,17 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    val TIME_MOVE_CAMERA = 1500
+    val ZOOM_CAMERA = 11.0f
+    val REMOVE_LATITUDE = 0.07
+
     private lateinit var mMap: GoogleMap
     private lateinit var locationService: LocationService
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
     private var favoriteState: Boolean = false
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -174,6 +180,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun openDetail(firework: Firework) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(firework.latitude - REMOVE_LATITUDE, firework.longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
+
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id!!)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
@@ -207,7 +215,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun allerANotrePosition() {
         if (locationService.addressTrouvee) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.myLatitude, locationService.myLongitude), 12.0f), 1500, null)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.myLatitude - REMOVE_LATITUDE, locationService.myLongitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
         } else {
             Toast.makeText(this, "Attente de votre position...", Toast.LENGTH_SHORT).show()
         }
