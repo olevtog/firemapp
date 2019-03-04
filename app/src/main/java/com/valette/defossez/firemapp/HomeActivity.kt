@@ -1,5 +1,6 @@
 package com.valette.defossez.firemapp
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -10,9 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import android.content.Intent
-import android.graphics.Typeface
 import android.net.Uri
-import android.support.v4.content.res.ResourcesCompat
 import android.widget.Toast
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -22,7 +21,6 @@ import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.LocationService
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
-import kotlinx.android.synthetic.main.nav_header_draver.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
 import java.text.SimpleDateFormat
@@ -79,14 +77,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
 
-    /*
-      _ __ ___   ___ _ __  _   _
-     | '_ ` _ \ / _ \ '_ \| | | |
-     | | | | | |  __/ | | | |_| |
-     |_| |_| |_|\___|_| |_|\__,_|
+        }
+    }
 
-    */
+/*
+  _ __ ___   ___ _ __  _   _
+ | '_ ` _ \ / _ \ '_ \| | | |
+ | | | | | |  __/ | | | |_| |
+ |_| |_| |_|\___|_| |_|\__,_|
+
+*/
 
     // on surcharge le bouton retour pour le menu, afin qu'il se ferme
     override fun onBackPressed() {
@@ -118,13 +121,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    /*
-      _ __ ___   __ _ _ __
-     | '_ ` _ \ / _` | '_ \
-     | | | | | | (_| | |_) |
-     |_| |_| |_|\__,_| .__/
-                     |_|
-     */
+/*
+  _ __ ___   __ _ _ __
+ | '_ ` _ \ / _` | '_ \
+ | | | | | | (_| | |_) |
+ |_| |_| |_|\__,_| .__/
+                 |_|
+ */
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         return true
@@ -157,7 +160,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         controller.getAll(this)
 
         mMap.setOnMarkerClickListener { marker ->
-            controller.getById(marker.tag.toString(), this)
+            controller.getByIdMap(marker.tag.toString(), this)
             currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
             currentMarker = marker
