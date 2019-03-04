@@ -40,11 +40,11 @@ class FireworksController {
                 }
     }
 
-    fun getByIdFavorite(id: String, activity: FavoriteAdapter, holder: FavoriteAdapter.ViewHolder, position: Int) {
+    fun getByIdFavorite(id: String, activity: FavoriteAdapter, holder: FavoriteAdapter.ViewHolder) {
         db.collection("fireworks").document(id).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
-                        activity.openDetail(document.toObject(Firework::class.java)!!, holder, position)
+                        activity.openDetail(document.toObject(Firework::class.java)!!, holder)
                     } else {
                         print("err")
                     }

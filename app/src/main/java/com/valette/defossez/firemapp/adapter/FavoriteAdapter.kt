@@ -15,7 +15,7 @@ import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
 import kotlinx.android.synthetic.main.favorite_firework.view.*
 
-class FavoriteAdapter(val favList: List<Favorite>, val activity: Activity) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+class FavoriteAdapter(val favList: List<Favorite>, val activity: FavoriteActivity) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     private val controller = FireworksController()
 
@@ -23,7 +23,7 @@ class FavoriteAdapter(val favList: List<Favorite>, val activity: Activity) : Rec
         var idFirework = favList[position].firework
 
         //display favorite
-        controller.getByIdFavorite(idFirework, this, holder, position)
+        controller.getByIdFavorite(idFirework, this, holder)
 
         var favoriteState = true;
         holder.listView.favorite.setOnClickListener {
@@ -39,12 +39,11 @@ class FavoriteAdapter(val favList: List<Favorite>, val activity: Activity) : Rec
     }
 
 
-    fun openDetail(firework: Firework, holder: ViewHolder, position: Int) {
+    fun openDetail(firework: Firework, holder: ViewHolder) {
         holder.listView.textName.text = firework.title
         holder.listView.textLocalisation.text = firework.address
         holder.listView.setOnClickListener {
-            var fa = FavoriteActivity()
-            fa.changeActivity(activity, firework.latitude, firework.longitude)
+            activity.finish(firework.id, firework.latitude, firework.longitude)
         }
     }
 
