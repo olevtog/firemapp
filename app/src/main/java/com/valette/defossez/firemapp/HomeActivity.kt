@@ -1,7 +1,5 @@
 package com.valette.defossez.firemapp
 
-import android.Manifest
-import android.content.Context.LOCATION_SERVICE
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -12,23 +10,19 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.graphics.Typeface
 import android.net.Uri
-import android.support.v4.app.ActivityCompat
-import android.util.Log
+import android.support.v4.content.res.ResourcesCompat
 import android.widget.Toast
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
-import com.valette.defossez.firemapp.service.AddressService
 import com.valette.defossez.firemapp.service.LocationService
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
+import kotlinx.android.synthetic.main.nav_header_draver.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
 import java.text.SimpleDateFormat
@@ -44,12 +38,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var favoriteState: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //prevent map lags
+        window.setBackgroundDrawableResource(R.drawable.background_drawer)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        // pour afficher ma map_aubergine
+        // pour afficher ma map
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -143,14 +141,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_silver))
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_simple))
 
         // pour supprimer la barre en bas pour afficher la direction et un lien vers maps
         mMap.uiSettings.isMapToolbarEnabled = false
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = false
         // pour ajouter une marge afin de compass ne soit pas caché ainsi que le logo google
-        mMap.setPadding(0, 120, 0, 100)
+        mMap.setPadding(0, 120, 0, 0)
 
         // mettre la camera par defaut a cette emplacement
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(47.35, 2.2)))

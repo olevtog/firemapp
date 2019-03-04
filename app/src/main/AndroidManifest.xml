@@ -14,13 +14,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FavoriteActivity"></activity>
+        <activity android:name=".FavoriteActivity" />
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_draver"
+            android:label="@string/app_name"
             android:theme="@style/MapTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +30,7 @@
         <activity
             android:name=".FormAddFireworkActivity"
             android:label="Ajouter un évènement"
-            android:parentActivityName=".HomeActivity"></activity>
+            android:parentActivityName=".HomeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
