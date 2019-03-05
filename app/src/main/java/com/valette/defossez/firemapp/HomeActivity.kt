@@ -1,7 +1,6 @@
 package com.valette.defossez.firemapp
 
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -14,6 +13,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Toast
 import com.google.android.gms.maps.model.*
@@ -22,13 +23,16 @@ import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.LocationService
+import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.dialog_filter.view.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
+import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -78,40 +82,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun displayDialogFilter() {
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null)
-        val mBuilder = AlertDialog.Builder(this)
-                .setView(mDialogView)
-                .setTitle("Filtrer")
-        //show dialog
-        val mAlertDialog = mBuilder.show()
-
-        mAlertDialog.seekBarDate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mAlertDialog.date.text = "Progress : $progress"
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                // Write code to perform some action when touch is started.
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                // Write code to perform some action when touch is stopped.
-                Toast.makeText(this@HomeActivity, "Progress is " + seekBar.progress + "%", Toast.LENGTH_SHORT).show()
-            }
-        })
-        
-        mDialogView.dialogLoginBtn.setOnClickListener {
-            //dismiss dialog
-            mAlertDialog.dismiss()
-            //get text from EditTexts of custom layout
-            val name = mDialogView.seekBarDate.progress
-        }
-
-        mDialogView.dialogCancelBtn.setOnClickListener {
-            mAlertDialog.dismiss()
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -272,6 +242,82 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentMarker = markers[id]!!
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), 1, null)
             }
+        }
+    }
+
+    // DIALOG
+
+    val cal = Calendar.getInstance()
+
+    private fun displayDialogFilter() {
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_filter, null)
+        val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+
+        initDateTimePickers(mDialogView)
+
+        val mAlertDialog = mBuilder.show()
+
+        mDialogView.search.setOnClickListener {
+            controller.getAllBetweenDates(SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputStart.text.toString()), SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputEnd.text.toString()), this)
+            mAlertDialog.dismiss()
+            //get text from EditTexts of custom layout
+        }
+
+        mDialogView.cancel.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+    }
+
+    private fun initDateTimePickers(mDialogView : View) {
+        val startDate = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateStartDate(mDialogView)
+        }
+
+        val endDate = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateEndDate(mDialogView)
+        }
+
+        mDialogView.inputStart.setOnClickListener {
+            DatePickerDialog(this, startDate, cal
+                    .get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        mDialogView.inputEnd.setOnClickListener {
+            DatePickerDialog(this, endDate, cal
+                    .get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+    }
+
+    private fun updateStartDate(mDialogView : View) {
+        val format = "dd/MM/yy"
+        val sdf = SimpleDateFormat(format, Locale.FRANCE)
+        mDialogView.inputStart.setText(sdf.format(cal.time))
+    }
+
+    private fun updateEndDate(mDialogView : View) {
+        val format = "dd/MM/yy"
+        val sdf = SimpleDateFormat(format, Locale.FRANCE)
+        mDialogView.inputEnd.setText(sdf.format(cal.time))
+    }
+
+    fun updateMarkers(fireworks : ArrayList<Firework>){
+        mMap.clear()
+        for (f in fireworks) {
+            var options = MarkerOptions()
+            options.position(LatLng(f.latitude, f.longitude))
+            options.title(f.title)
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            currentMarker = mMap.addMarker(options)
+            currentMarker.tag = f.id
+            markers.put(f.id, currentMarker)
         }
     }
 

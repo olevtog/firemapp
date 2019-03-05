@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.valette.defossez.firemapp.FavoriteActivity
 import com.valette.defossez.firemapp.HomeActivity
 import com.valette.defossez.firemapp.adapter.FavoriteAdapter
+import java.util.*
 
 
 class FireworksController {
@@ -26,6 +27,17 @@ class FireworksController {
                         fireworks.add(document.toObject(Firework::class.java))
                     }
                     activity.displayMarkers(fireworks)
+                }
+    }
+
+    fun getAllBetweenDates(start : Date, end : Date, activity: HomeActivity) {
+        var fireworks = ArrayList<Firework>()
+        db.collection("fireworks").whereGreaterThanOrEqualTo("date", start).whereLessThanOrEqualTo("date", end).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        fireworks.add(document.toObject(Firework::class.java))
+                    }
+                    activity.updateMarkers(fireworks)
                 }
     }
 
