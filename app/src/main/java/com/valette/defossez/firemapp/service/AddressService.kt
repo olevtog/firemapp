@@ -12,7 +12,11 @@ class AddressService(context : Context){
 
     fun getAddresses(address : String, size : Int) : List<Address> {
         return geocoder.getFromLocationName(address,size)
-
     }
+
+    fun getAddresses(latitude : Double, longitude : Double,  size : Int) : List<Address> {
+        return geocoder.getFromLocation(latitude, longitude, size)
+    }
+
 
 }

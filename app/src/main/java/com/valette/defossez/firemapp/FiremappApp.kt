@@ -2,6 +2,7 @@ package com.valette.defossez.firemapp
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import com.valette.defossez.firemapp.service.LocationService
 
 /**
  * Classe principale de l'application
@@ -13,8 +14,6 @@ class FiremappApp : Application() {
      */
     companion object {
         lateinit var database: FiremappDatabase
-        var myLongitude = 0.0
-        var myLatitude = 0.0
     }
 
     override fun onCreate() {

@@ -48,7 +48,7 @@ class FavoriteAdapter(val favList: List<Favorite>, val activity: FavoriteActivit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.favorite_firework, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.favorite_firework, parent, false)
         return ViewHolder(v)
     }
 

@@ -39,11 +39,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val REMOVE_LATITUDE = 0.07
 
     private lateinit var mMap: GoogleMap
-    private lateinit var locationService: LocationService
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
     private var markers: HashMap<String, Marker> = HashMap()
     private var favoriteState: Boolean = false
+    private lateinit var locationService: LocationService
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +69,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.openDrawer(GravityCompat.START)
         }
 
-        //Lancer la recherche de la position
-        locationService = LocationService()
-        locationService.lancerLaRechercheDeLaLocalisation(this)
+        //init location service
+        locationService = LocationService(this)
 
         //Aller a la position actuelle
         boutonLocalisation.setOnClickListener {
-            allerANotrePosition()
+            moveToUserLocation()
         }
     }
 
@@ -226,7 +225,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun openDetail(firework: Firework) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(firework.latitude - REMOVE_LATITUDE, firework.longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
 
-        favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id!!)
+        favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
@@ -240,10 +239,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         favorite.setOnClickListener {
             if (favoriteState) {
-                FiremappApp.database.favoriteController().delete(firework.id!!)
+                FiremappApp.database.favoriteController().delete(firework.id)
                 favorite.setBackgroundResource(R.drawable.ic_favorite_border)
             } else {
-                FiremappApp.database.favoriteController().insert(Favorite(firework.id!!))
+                FiremappApp.database.favoriteController().insert(Favorite(firework.id))
                 favorite.setBackgroundResource(R.drawable.ic_favorite)
             }
             favoriteState = !favoriteState
@@ -257,17 +256,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun allerANotrePosition() {
-        if (locationService.addressTrouvee) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.myLatitude - REMOVE_LATITUDE, locationService.myLongitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
-        } else {
-            Toast.makeText(this, "Attente de votre position...", Toast.LENGTH_SHORT).show()
-        }
+    private fun moveToUserLocation() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.getLatitude() - REMOVE_LATITUDE, locationService.getLongitude()), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
                 val id = data.extras.getString("id")
                 val latitude = data.extras.getDouble("latitude")
                 val longitude = data.extras.getDouble("longitude")

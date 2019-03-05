@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 import android.view.View
 import com.valette.defossez.firemapp.adapter.AddressAdapter
+import com.valette.defossez.firemapp.service.LocationService
 
 
 class FormAddFireworkActivity : AppCompatActivity() {
@@ -29,11 +30,13 @@ class FormAddFireworkActivity : AppCompatActivity() {
     val addressService = AddressService(this)
     val cal = Calendar.getInstance()
     var addresses = ArrayList<String>()
+    private lateinit var locationService: LocationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_add_firework)
         initDateTimePickers()
+        locationService = LocationService(this)
         submit.setOnClickListener {
             validate()
         }
@@ -49,6 +52,10 @@ class FormAddFireworkActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+
+        location.setOnClickListener {
+            inputAddress.setText(addressService.getAddresses(locationService.getLatitude(), locationService.getLongitude(), 1)[0].getAddressLine(0))
+        }
 
     }
 
