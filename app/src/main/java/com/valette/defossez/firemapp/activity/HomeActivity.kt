@@ -1,11 +1,10 @@
-package com.valette.defossez.firemapp
+package com.valette.defossez.firemapp.activity
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Point
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
@@ -28,6 +27,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.valette.defossez.firemapp.FiremappApp
+import com.valette.defossez.firemapp.R
 import com.valette.defossez.firemapp.adapter.AddressAdapter
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
@@ -279,12 +280,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         // when you want to signal event
         signalButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/html"
-            intent.putExtra(Intent.EXTRA_EMAIL, EMAIL_ADRESS)
-            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie" + firework.id)
+            val intent = Intent(Intent.ACTION_SENDTO) // it's not ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie : " + firework.id)
             intent.putExtra(Intent.EXTRA_TEXT, "Motif de votre signalement : ")
-            startActivity(Intent.createChooser(intent, "Signaler l'évenement pas email :"))
+            intent.data = Uri.parse("mailto:"+EMAIL_ADRESS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
         // to add event in calendar
         calendarButton.setOnClickListener {

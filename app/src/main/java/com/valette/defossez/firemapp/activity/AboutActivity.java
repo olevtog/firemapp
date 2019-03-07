@@ -1,7 +1,9 @@
-package com.valette.defossez.firemapp;
+package com.valette.defossez.firemapp.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.valette.defossez.firemapp.R;
 
 public class AboutActivity extends AppCompatActivity {
 
