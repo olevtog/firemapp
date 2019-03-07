@@ -113,7 +113,7 @@
 
 
             <ImageButton
-                android:id="@+id/imageButtonhg"
+                android:id="@+id/localisation"
                 android:scaleType="fitXY"
                 android:layout_marginRight="10dp"
                 android:layout_width="30dp"

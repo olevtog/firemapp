@@ -122,6 +122,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED) //close keyboard
     }
 
+
 /*
   _ __ ___   ___ _ __  _   _
  | '_ ` _ \ / _ \ '_ \| | | |
@@ -134,7 +135,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        } else if (sliding_layout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            sliding_layout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+        else {
             super.onBackPressed()
         }
     }
@@ -258,6 +262,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             favoriteState = !favoriteState
         }
         route.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
+        localisation.setOnClickListener {
             val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
