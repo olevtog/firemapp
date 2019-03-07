@@ -21,6 +21,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -50,6 +51,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val TIME_MOVE_CAMERA_MIN = 500
     val ZOOM_CAMERA = 12.5f
     val REMOVE_LATITUDE = 0.02
+    val DISTANCE_MOVE = 10000 //distance a choisir si move long ou court de la camera
+    val DELAY_FIREWORK = 60 * 60 * 1000
     val EMAIL_ADRESS = "defossez.valette@gmail.com"
 
     private lateinit var mMap: GoogleMap
@@ -123,13 +126,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-/*
-  _ __ ___   ___ _ __  _   _
- | '_ ` _ \ / _ \ '_ \| | | |
- | | | | | |  __/ | | | |_| |
- |_| |_| |_|\___|_| |_|\__,_|
-
-*/
+    // -------------- MENU
 
     // on surcharge le bouton retour pour le menu, afin qu'il se ferme
     override fun onBackPressed() {
@@ -142,7 +139,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.onBackPressed()
         }
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
@@ -165,13 +161,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-/*
-  _ __ ___   __ _ _ __
- | '_ ` _ \ / _` | '_ \
- | | | | | | (_| | |_) |
- |_| |_| |_|\__,_| .__/
-                 |_|
- */
+    // -------------- MAP
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         return true
@@ -293,7 +283,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(Intent.ACTION_INSERT)
             intent.type = "vnd.android.cursor.item/event"
             val startTime = firework.date.time
-            val endTime = firework.date.time + 60 * 60 * 1000
+            val endTime = firework.date.time + DELAY_FIREWORK
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
             intent.putExtra(CalendarContract.Events.TITLE, "FireMapp " + firework.title)
@@ -304,6 +294,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun moveToUserLocation(latitude: Double = locationService.getLatitude(), longitude: Double = locationService.getLongitude(), time: Int = TIME_MOVE_CAMERA_MAX, isAnchored:Boolean = false) {
+        if(latitude == 0.0 || longitude == 0.0){
+            Toast.makeText(this, "Position GPS non trouvée", Toast.LENGTH_LONG).show()
+            return
+        }
         val actualLat = mMap.cameraPosition.target.latitude
         val actualLong = mMap.cameraPosition.target.longitude
         val loc1 = Location("")
@@ -315,7 +309,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val distanceInMeters = loc1.distanceTo(loc2)
         var newTime = time
         if (newTime == TIME_MOVE_CAMERA_MAX) {
-            if(distanceInMeters < 10000){
+            if(distanceInMeters < DISTANCE_MOVE){
                 newTime = TIME_MOVE_CAMERA_MIN
             }
         }
@@ -341,7 +335,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    // DIALOG
+    // -------------- DIALOG
 
     val cal = Calendar.getInstance()
 
