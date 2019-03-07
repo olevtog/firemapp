@@ -22,6 +22,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -122,13 +123,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-/*
-  _ __ ___   ___ _ __  _   _
- | '_ ` _ \ / _ \ '_ \| | | |
- | | | | | |  __/ | | | |_| |
- |_| |_| |_|\___|_| |_|\__,_|
-
-*/
+    // -------------- MENU
 
     // on surcharge le bouton retour pour le menu, afin qu'il se ferme
     override fun onBackPressed() {
@@ -164,13 +159,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-/*
-  _ __ ___   __ _ _ __
- | '_ ` _ \ / _` | '_ \
- | | | | | | (_| | |_) |
- |_| |_| |_|\__,_| .__/
-                 |_|
- */
+    // -------------- MAP
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         return true
@@ -303,6 +292,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun moveToUserLocation(latitude: Double = locationService.getLatitude(), longitude: Double = locationService.getLongitude(), time: Int = TIME_MOVE_CAMERA_MAX, isAnchored:Boolean = false) {
+        if(latitude == 0.0 || longitude == 0.0){
+            Toast.makeText(this, "Position GPS non trouvée", Toast.LENGTH_LONG).show()
+            return
+        }
         val actualLat = mMap.cameraPosition.target.latitude
         val actualLong = mMap.cameraPosition.target.longitude
         val loc1 = Location("")
@@ -340,7 +333,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    // DIALOG
+    // -------------- DIALOG
 
     val cal = Calendar.getInstance()
 
