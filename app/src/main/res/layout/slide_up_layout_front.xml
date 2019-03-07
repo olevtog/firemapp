@@ -82,7 +82,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/background_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -93,10 +92,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="24dp"
+                android:textSize="25dp"
                 android:textColor="@color/primary_text"
                 android:padding="8dp"
-                android:text="Feu Artifice de la fête nationale" />
+                android:text="Feu Artifice de la fête nationale"
+                android:textAllCaps="true"/>
 
 
         </LinearLayout>

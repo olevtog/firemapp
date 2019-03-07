@@ -279,12 +279,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         // when you want to signal event
         signalButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/html"
-            intent.putExtra(Intent.EXTRA_EMAIL, EMAIL_ADRESS)
-            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie" + firework.id)
+            val intent = Intent(Intent.ACTION_SENDTO) // it's not ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie : " + firework.id)
             intent.putExtra(Intent.EXTRA_TEXT, "Motif de votre signalement : ")
-            startActivity(Intent.createChooser(intent, "Signaler l'évenement pas email :"))
+            intent.data = Uri.parse("mailto:"+EMAIL_ADRESS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
         // to add event in calendar
         calendarButton.setOnClickListener {
