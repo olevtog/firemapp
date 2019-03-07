@@ -18,7 +18,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -199,7 +198,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mMap.setOnMarkerClickListener { marker ->
             controller.getByIdMap(marker.tag.toString(), this)
             currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
             currentMarker = marker
             true
         }
@@ -220,7 +219,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var options = MarkerOptions()
             options.position(LatLng(f.latitude, f.longitude))
             options.title(f.title)
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+
+            if(f.date < Date()){
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+            }else{
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            }
             currentMarker = mMap.addMarker(options)
             currentMarker.tag = f.id
             markers.put(f.id, currentMarker)
@@ -315,10 +319,20 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val mAlertDialog = mBuilder.show()
 
-        mDialogView.search.setOnClickListener {
-            controller.getAllBetweenDates(SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputStart.text.toString()), SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputEnd.text.toString()), this)
-            mAlertDialog.dismiss()
-            //get text from EditTexts of custom layout
+        mDialogView.submit.setOnClickListener {
+            if(mDialogView.inputStart.text.isNullOrEmpty() && mDialogView.inputEnd.text.isNullOrEmpty()){
+                controller.getAll(this)
+                mAlertDialog.dismiss()
+            }else if(mDialogView.inputStart.text.isNullOrEmpty()){
+                controller.getAllBeforeDate(SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputEnd.text.toString()), this)
+                mAlertDialog.dismiss()
+            }else if(mDialogView.inputEnd.text.isNullOrEmpty()){
+                controller.getAllAfterDate(SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputStart.text.toString()), this)
+                mAlertDialog.dismiss()
+            }else{
+                controller.getAllBetweenDates(SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputStart.text.toString()), SimpleDateFormat("dd/MM/yy").parse(mDialogView.inputEnd.text.toString()), this)
+                mAlertDialog.dismiss()
+            }
         }
 
         mDialogView.cancel.setOnClickListener {

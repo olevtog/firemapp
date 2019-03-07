@@ -55,7 +55,7 @@
                     android:clickable="true"
                     android:ems="10"
                     android:focusableInTouchMode="false"
-                    android:hint="Debut"
+                    android:hint="Après"
                     android:inputType="date"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -74,8 +74,8 @@
                     android:clickable="true"
                     android:ems="10"
                     android:focusableInTouchMode="false"
-                    android:hint="Fin"
-                    android:inputType="time"/>
+                    android:hint="Avant"
+                    android:inputType="date"/>
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -98,7 +98,7 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/search"
+                android:id="@+id/submit"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="16dp"

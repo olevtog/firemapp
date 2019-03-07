@@ -54,7 +54,7 @@ class FireworksController {
 
     fun getAllBeforeDate(end : Date, activity: HomeActivity) {
         var fireworks = ArrayList<Firework>()
-        db.collection("fireworks").whereGreaterThanOrEqualTo("date", end).get()
+        db.collection("fireworks").whereLessThanOrEqualTo("date", end).get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         fireworks.add(document.toObject(Firework::class.java))
