@@ -10,11 +10,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="bottom"
-        android:padding="30dp"
         android:orientation="vertical"
+        android:padding="30dp"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView"
@@ -32,36 +38,36 @@
             android:fontFamily="@font/pacifico"
             android:text="@string/app_name"
             android:textAlignment="center"
-            android:textSize="50dp" />
+            android:textSize="50sp" />
 
         <TextView
             android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Version 1.0.0"
+            android:text="@string/version"
             android:textAlignment="center"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="L'application FireMapp permet de trouver les feux d'artifices en quelques clics."
-            android:textSize="20dp" />
+            android:text="@string/l_application_firemapp_permet_de_trouver_les_feux_d_artifices_en_quelques_clics"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="30dp"
-            android:text="Mentions légales"
-            android:textSize="12dp" />
+            android:text="@string/mentions_l_gales"
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY"
-            android:textSize="10dp" />
+            android:text="@string/icons_made_by_freepik_from_www_flaticon_com_is_licensed_by_cc_3_0_by"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

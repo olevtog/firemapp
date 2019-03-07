@@ -7,4 +7,24 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="version">Version 1.0.0</string>
+    <string name="l_application_firemapp_permet_de_trouver_les_feux_d_artifices_en_quelques_clics">L\'application FireMapp permet de trouver les feux d\'artifices en quelques clics.</string>
+    <string name="mentions_l_gales">Mentions légales</string>
+    <string name="icons_made_by_freepik_from_www_flaticon_com_is_licensed_by_cc_3_0_by">Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY</string>
+    <string name="todo">TODO</string>
+    <string name="date">Date</string>
+    <string name="caract_ristiques_techniques">Caractéristiques techniques</string>
+    <string name="feu_d_artifice">Feu d\'artifice</string>
+    <string name="horaire">Horaire</string>
+    <string name="adresse">Adresse</string>
+    <string name="ajouter_l_v_nement">Ajouter l\'évènement</string>
+    <string name="titre">Titre</string>
+    <string name="un_nouveau_feu_d_artifice">Un nouveau feu d\'artifice</string>
+    <string name="lille_champ_de_mars">Lille, champ de Mars</string>
+    <string name="_14_07_2018_23h">14/07/2018, 23h</string>
+    <string name="vous_trouverez_toutes_les_informations_sur_notre_site_si_vous_souhaitez_vous_y_rendre">Vous trouverez toutes les informations sur notre site si vous souhaitez vous y rendre</string>
+    <string name="signaler">Signaler</string>
+    <string name="feu_artifice_de_la_f_te_nationale">Feu Artifice de la fête nationale</string>
+    <string name="recherche">Recherche</string>
+    <string name="test">test</string>
 </resources>

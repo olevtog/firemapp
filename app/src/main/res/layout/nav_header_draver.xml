@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:fontFamily="@font/pacifico"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:text="@string/app_name" />
 
 </LinearLayout>

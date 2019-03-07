@@ -44,7 +44,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:hint="Recherche"
+            android:hint="@string/recherche"
             android:background="@android:color/transparent"
             android:textColorHint="@color/secondary_text"
             android:inputType="textPostalAddress"
