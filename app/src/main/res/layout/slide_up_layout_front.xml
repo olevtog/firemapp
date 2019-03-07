@@ -84,10 +84,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/primary_text" />
 
             <TextView
                 android:id="@+id/textViewTitle"
@@ -99,6 +107,13 @@
                 android:padding="8dp"
                 android:text="@string/feu_artifice_de_la_f_te_nationale"
                 android:textAllCaps="true"/>
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/primary_text" />
 
 
         </LinearLayout>
