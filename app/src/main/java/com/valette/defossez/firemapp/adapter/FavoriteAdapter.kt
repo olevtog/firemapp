@@ -29,10 +29,10 @@ class FavoriteAdapter(val favList: List<Favorite>, val activity: FavoriteActivit
         holder.listView.favorite.setOnClickListener {
             if (favoriteState) {
                 FiremappApp.database.favoriteController().delete(idFirework)
-                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite_border)
+                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite_border_red)
             } else {
                 FiremappApp.database.favoriteController().insert(Favorite(idFirework))
-                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite)
+                holder.listView.favorite.setBackgroundResource(R.drawable.ic_favorite_red)
             }
             favoriteState = !favoriteState
         }

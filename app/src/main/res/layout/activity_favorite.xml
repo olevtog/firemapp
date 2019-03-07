@@ -6,9 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".FavoriteActivity">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="262dp"
+        android:alpha=".25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_fireworks_background" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerFavorite"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>
