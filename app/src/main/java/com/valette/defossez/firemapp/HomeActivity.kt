@@ -5,26 +5,33 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.valette.defossez.firemapp.adapter.AddressAdapter
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
+import com.valette.defossez.firemapp.service.AddressService
 import com.valette.defossez.firemapp.service.LocationService
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
@@ -48,7 +55,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var markers: HashMap<String, Marker> = HashMap()
     private var favoriteState: Boolean = false
     private lateinit var locationService: LocationService
-
+    private val ctx = this
+    val addressService = AddressService(this)
+    var addresses = ArrayList<String>()
+    var timer = Timer()
+    val DELAY: Long = 500
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -87,6 +98,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         filterFloatingButton.setOnClickListener {
             displayDialogFilter()
         }
+
+        initAutocomplete()
     }
 
 
@@ -351,5 +364,62 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val format = "dd/MM/yy"
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         mDialogView.inputEnd.setText(sdf.format(cal.time))
+    }
+
+    val geocoder = Geocoder(this)
+
+    private fun initAutocomplete() {
+        var adapter = AddressAdapter(this, R.layout.dropdown, addresses)
+        search.threshold = 1
+        search.setAdapter<AddressAdapter>(adapter)
+        search.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(text : Editable?) {
+                getAddressFromInput(text.toString(), adapter)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        search.setOnEditorActionListener { input, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                try {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(geocoder.getFromLocationName(input.text.toString(), 1)[0].latitude - REMOVE_LATITUDE, geocoder.getFromLocationName(input.text.toString(), 1)[0].longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
+                    false
+                }catch (e : java.lang.Exception){
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun getAddressFromInput(text : String, adapter: ArrayAdapter<String>){
+        progressBar.visibility = View.VISIBLE
+        if(text.length > 3){
+            timer.cancel()
+            timer = Timer()
+            timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            ctx.runOnUiThread {
+                                if (text.isNotEmpty() && addressService.getAddresses(text, 3).isNotEmpty()) {
+                                    var address = addressService.getAddresses(text, 5)[0].getAddressLine(0)
+                                    adapter.clear()
+                                    adapter.add(address)
+                                }
+                                progressBar.visibility = View.GONE
+                            }
+
+                        }
+                    },
+                    DELAY
+            )
+        }else{
+            adapter.clear()
+        }
     }
 }
