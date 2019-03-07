@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -43,9 +45,10 @@ import java.util.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    val TIME_MOVE_CAMERA = 1000
-    val ZOOM_CAMERA = 11.0f
-    val REMOVE_LATITUDE = 0.07
+    val TIME_MOVE_CAMERA_MAX = 1500
+    val TIME_MOVE_CAMERA_MIN = 500
+    val ZOOM_CAMERA = 12.5f
+    val REMOVE_LATITUDE = 0.02
     val EMAIL_ADRESS = "defossez.valette@gmail.com"
 
     private lateinit var mMap: GoogleMap
@@ -118,6 +121,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED) //close keyboard
     }
 
+
 /*
   _ __ ___   ___ _ __  _   _
  | '_ ` _ \ / _ \ '_ \| | | |
@@ -130,7 +134,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        } else if (sliding_layout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            sliding_layout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+        else {
             super.onBackPressed()
         }
     }
@@ -207,7 +214,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             closeKeyboard()
         }
         mMap.setOnMapClickListener {
-            if(sliding_layout.panelState != SlidingUpPanelLayout.PanelState.HIDDEN) {
+            if (sliding_layout.panelState != SlidingUpPanelLayout.PanelState.HIDDEN) {
                 sliding_layout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
             }
         }
@@ -233,7 +240,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun openDetail(firework: Firework) {
         closeKeyboard()
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(firework.latitude - REMOVE_LATITUDE, firework.longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
 
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id)
         val format = SimpleDateFormat("dd/MM/yyy hh:mm")
@@ -241,7 +247,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         textViewAddress.text = firework.address
         textViewTitle.text = firework.title
         textViewDescription.text = firework.description
+
         sliding_layout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+        moveToUserLocation(firework.latitude, firework.longitude, isAnchored = true)
         if (favoriteState) {
             favorite.setBackgroundResource(R.drawable.ic_favorite)
         } else {
@@ -258,6 +266,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             favoriteState = !favoriteState
         }
         route.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
+        localisation.setOnClickListener {
             val gmmIntentUri = Uri.parse("geo:" + firework.latitude + "," + firework.longitude + "?q=" + firework.address)
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
@@ -287,9 +301,27 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
-    private fun moveToUserLocation() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(locationService.getLatitude() - REMOVE_LATITUDE, locationService.getLongitude()), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
+    private fun moveToUserLocation(latitude: Double = locationService.getLatitude(), longitude: Double = locationService.getLongitude(), time: Int = TIME_MOVE_CAMERA_MAX, isAnchored:Boolean = false) {
+        val actualLat = mMap.cameraPosition.target.latitude
+        val actualLong = mMap.cameraPosition.target.longitude
+        val loc1 = Location("")
+        loc1.latitude = actualLat
+        loc1.longitude = actualLong
+        val loc2 = Location("")
+        loc2.latitude = latitude
+        loc2.longitude = longitude
+        val distanceInMeters = loc1.distanceTo(loc2)
+        var newTime = time
+        if (newTime == TIME_MOVE_CAMERA_MAX) {
+            if(distanceInMeters < 10000){
+                newTime = TIME_MOVE_CAMERA_MIN
+            }
+        }
+        if (isAnchored || sliding_layout.panelState == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), newTime, null)
+        } else {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), ZOOM_CAMERA), newTime, null)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -302,7 +334,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 markers[id]!!.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                 currentMarker = markers[id]!!
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), 1, null)
+                moveToUserLocation(latitude, longitude, time = 1)
             }
         }
     }
@@ -389,7 +421,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         search.imeOptions = EditorInfo.IME_ACTION_DONE
 
         search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(text : Editable?) {
+            override fun afterTextChanged(text: Editable?) {
                 getAddressFromInput(text.toString(), adapter)
             }
 
@@ -398,11 +430,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
         search.setOnEditorActionListener { input, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 try {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(geocoder.getFromLocationName(input.text.toString(), 1)[0].latitude - REMOVE_LATITUDE, geocoder.getFromLocationName(input.text.toString(), 1)[0].longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
+                    moveToUserLocation(geocoder.getFromLocationName(input.text.toString(), 1)[0].latitude, geocoder.getFromLocationName(input.text.toString(), 1)[0].longitude)
                     false
-                }catch (e : java.lang.Exception){
+                } catch (e: java.lang.Exception) {
                     false
                 }
             } else {
@@ -411,9 +443,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun getAddressFromInput(text : String, adapter: ArrayAdapter<String>){
+    private fun getAddressFromInput(text: String, adapter: ArrayAdapter<String>) {
         progressBar.visibility = View.VISIBLE
-        if(text.length > 3){
+        if (text.length > 3) {
             timer.cancel()
             timer = Timer()
             timer.schedule(
@@ -432,7 +464,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     },
                     DELAY
             )
-        }else{
+        } else {
             adapter.clear()
         }
     }
