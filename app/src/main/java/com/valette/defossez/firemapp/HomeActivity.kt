@@ -178,6 +178,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun displayMarkers(fireworks: ArrayList<Firework>) {
+        mMap.clear()
         for (f in fireworks) {
             var options = MarkerOptions()
             options.position(LatLng(f.latitude, f.longitude))
@@ -326,18 +327,4 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         mDialogView.inputEnd.setText(sdf.format(cal.time))
     }
-
-    fun updateMarkers(fireworks : ArrayList<Firework>){
-        mMap.clear()
-        for (f in fireworks) {
-            var options = MarkerOptions()
-            options.position(LatLng(f.latitude, f.longitude))
-            options.title(f.title)
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            currentMarker = mMap.addMarker(options)
-            currentMarker.tag = f.id
-            markers.put(f.id, currentMarker)
-        }
-    }
-
 }
