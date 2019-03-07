@@ -51,6 +51,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val TIME_MOVE_CAMERA_MIN = 500
     val ZOOM_CAMERA = 12.5f
     val REMOVE_LATITUDE = 0.02
+    val DISTANCE_MOVE = 10000 //distance a choisir si move long ou court de la camera
+    val DELAY_FIREWORK = 60 * 60 * 1000
     val EMAIL_ADRESS = "defossez.valette@gmail.com"
 
     private lateinit var mMap: GoogleMap
@@ -137,7 +139,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.onBackPressed()
         }
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
@@ -282,7 +283,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(Intent.ACTION_INSERT)
             intent.type = "vnd.android.cursor.item/event"
             val startTime = firework.date.time
-            val endTime = firework.date.time + 60 * 60 * 1000
+            val endTime = firework.date.time + DELAY_FIREWORK
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
             intent.putExtra(CalendarContract.Events.TITLE, "FireMapp " + firework.title)
@@ -308,7 +309,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val distanceInMeters = loc1.distanceTo(loc2)
         var newTime = time
         if (newTime == TIME_MOVE_CAMERA_MAX) {
-            if(distanceInMeters < 10000){
+            if(distanceInMeters < DISTANCE_MOVE){
                 newTime = TIME_MOVE_CAMERA_MIN
             }
         }
