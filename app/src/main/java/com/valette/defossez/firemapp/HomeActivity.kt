@@ -3,6 +3,7 @@ package com.valette.defossez.firemapp
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +14,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -67,6 +70,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Pour ouvrir le menu
         buttonOpenMenu.setOnClickListener {
+            closeKeyboard()
             drawer_layout.openDrawer(GravityCompat.START)
         }
 
@@ -75,7 +79,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //Aller a la position actuelle
         boutonLocalisation.setOnClickListener {
+            closeKeyboard()
             moveToUserLocation()
+        }
+
+        //filter
+        filterFloatingButton.setOnClickListener {
+            displayDialogFilter()
         }
     }
 
@@ -88,6 +98,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             controller.getAll(this)
         } catch (e: Exception) {
         }
+    }
+
+
+    fun closeKeyboard() {
+        val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED) //close keyboard
     }
 
 /*
@@ -119,10 +135,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, FavoriteActivity::class.java)
                 startActivityForResult(intent, 1)
             }
-            R.id.nav_filter -> {
-                displayDialogFilter()
-            }
-            R.id.nav_share -> {
+            R.id.nav_info -> {
+                Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -175,6 +189,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             currentMarker = marker
             true
         }
+
+        mMap.setOnCameraMoveListener {
+            closeKeyboard()
+        }
+        mMap.setOnMapClickListener {
+            if(sliding_layout.panelState != SlidingUpPanelLayout.PanelState.HIDDEN) {
+                sliding_layout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+            }
+        }
     }
 
     fun displayMarkers(fireworks: ArrayList<Firework>) {
@@ -191,6 +214,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun openDetail(firework: Firework) {
+        closeKeyboard()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(firework.latitude - REMOVE_LATITUDE, firework.longitude), ZOOM_CAMERA), TIME_MOVE_CAMERA, null)
 
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id)
@@ -222,7 +246,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(mapIntent)
         }
         // when you want to signal event
-        signalButton.setOnClickListener{
+        signalButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/html"
             intent.putExtra(Intent.EXTRA_EMAIL, EMAIL_ADRESS)
@@ -231,14 +255,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(Intent.createChooser(intent, "Signaler l'évenement pas email :"))
         }
         // to add event in calendar
-        calendarButton.setOnClickListener{
+        calendarButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_INSERT)
             intent.type = "vnd.android.cursor.item/event"
             val startTime = firework.date.time
             val endTime = firework.date.time + 60 * 60 * 1000
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
-            intent.putExtra(CalendarContract.Events.TITLE, "FireMapp "+ firework.title)
+            intent.putExtra(CalendarContract.Events.TITLE, "FireMapp " + firework.title)
             intent.putExtra(CalendarContract.Events.DESCRIPTION, firework.description)
             intent.putExtra(CalendarContract.Events.EVENT_LOCATION, firework.description)
             startActivity(intent)
@@ -288,7 +312,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun initDateTimePickers(mDialogView : View) {
+    private fun initDateTimePickers(mDialogView: View) {
         val startDate = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
@@ -316,13 +340,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun updateStartDate(mDialogView : View) {
+    private fun updateStartDate(mDialogView: View) {
         val format = "dd/MM/yy"
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         mDialogView.inputStart.setText(sdf.format(cal.time))
     }
 
-    private fun updateEndDate(mDialogView : View) {
+    private fun updateEndDate(mDialogView: View) {
         val format = "dd/MM/yy"
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         mDialogView.inputEnd.setText(sdf.format(cal.time))
