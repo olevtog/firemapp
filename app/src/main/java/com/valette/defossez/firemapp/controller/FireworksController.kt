@@ -1,10 +1,8 @@
 package com.valette.defossez.firemapp.controller
 
-import android.app.Activity
 import com.valette.defossez.firemapp.entity.Firework
 import com.google.firebase.firestore.FirebaseFirestore
-import com.valette.defossez.firemapp.FavoriteActivity
-import com.valette.defossez.firemapp.HomeActivity
+import com.valette.defossez.firemapp.activity.HomeActivity
 import com.valette.defossez.firemapp.adapter.FavoriteAdapter
 import java.util.*
 

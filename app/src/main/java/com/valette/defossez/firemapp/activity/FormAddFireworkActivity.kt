@@ -1,4 +1,4 @@
-package com.valette.defossez.firemapp
+package com.valette.defossez.firemapp.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 import android.view.View
+import com.valette.defossez.firemapp.R
 import com.valette.defossez.firemapp.adapter.AddressAdapter
 import com.valette.defossez.firemapp.service.LocationService
 

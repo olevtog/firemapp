@@ -18,12 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".FavoriteActivity"
+            android:name=".activity.FavoriteActivity"
             android:label="Mes favoris"
             android:screenOrientation="portrait"
-            android:parentActivityName=".HomeActivity" />
+            android:parentActivityName=".activity.HomeActivity" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.HomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/MapTheme">
@@ -34,10 +34,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FormAddFireworkActivity"
+            android:name=".activity.FormAddFireworkActivity"
             android:label="Ajouter un évènement"
             android:screenOrientation="portrait"
-            android:parentActivityName=".HomeActivity" />
+            android:parentActivityName=".activity.HomeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -51,10 +51,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".AboutActivity"
+            android:name=".activity.AboutActivity"
             android:label="A propos"
             android:screenOrientation="portrait"
-            android:parentActivityName=".HomeActivity" />
+            android:parentActivityName=".activity.HomeActivity" />
     </application>
 
 </manifest>

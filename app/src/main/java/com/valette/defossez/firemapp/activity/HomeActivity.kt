@@ -1,11 +1,10 @@
-package com.valette.defossez.firemapp
+package com.valette.defossez.firemapp.activity
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Point
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
@@ -29,6 +28,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.valette.defossez.firemapp.FiremappApp
+import com.valette.defossez.firemapp.R
 import com.valette.defossez.firemapp.adapter.AddressAdapter
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite

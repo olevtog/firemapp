@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FormAddFireworkActivity">
+    tools:context=".activity.FormAddFireworkActivity">
 
 
     <RelativeLayout
@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:ems="10"
-                    android:hint="Adresse"
+                    android:hint="@string/adresse"
                     android:inputType="textPostalAddress" />
 
             </android.support.design.widget.TextInputLayout>
@@ -88,7 +88,7 @@
                 android:clickable="true"
                 android:ems="10"
                 android:focusableInTouchMode="false"
-                android:hint="Date"
+                android:hint="@string/date"
                 android:inputType="date" />
 
         </android.support.design.widget.TextInputLayout>
@@ -109,7 +109,7 @@
                 android:clickable="true"
                 android:ems="10"
                 android:focusableInTouchMode="false"
-                android:hint="Horaire"
+                android:hint="@string/horaire"
                 android:inputType="time" />
 
         </android.support.design.widget.TextInputLayout>
@@ -133,8 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="Feu d'artifice"
-            android:hint="Titre"
+            android:text="@string/feu_d_artifice"
+            android:hint="@string/titre"
             android:inputType="textPersonName" />
 
 
@@ -155,8 +155,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="Un nouveau feu d'artifice"
-            android:hint="Caractéristiques techniques"
+            android:text="@string/un_nouveau_feu_d_artifice"
+            android:hint="@string/caract_ristiques_techniques"
             android:inputType="textMultiLine"
             android:maxHeight="200dp"
             />
@@ -174,7 +174,7 @@
         android:textColor="@color/primary_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="Ajouter l'évènement"
+        android:text="@string/ajouter_l_v_nement"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

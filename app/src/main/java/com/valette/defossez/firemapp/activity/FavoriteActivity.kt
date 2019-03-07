@@ -1,12 +1,13 @@
-package com.valette.defossez.firemapp
+package com.valette.defossez.firemapp.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.LinearLayout
+import com.valette.defossez.firemapp.FiremappApp
+import com.valette.defossez.firemapp.R
 import com.valette.defossez.firemapp.adapter.FavoriteAdapter
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoriteActivity">
+    tools:context=".activity.FavoriteActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_fireworks_background" />
+        app:srcCompat="@drawable/ic_fireworks_background"
+        android:contentDescription="@string/todo" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerFavorite"

@@ -48,8 +48,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
+
+                android:textColor="@color/primary_text"
                 android:layout_marginStart="8dp"
-                android:text="14/07/2018, 23h" />
+                android:text="@string/_14_07_2018_23h" />
 
             <ImageView
                 android:layout_width="0dip"
@@ -95,7 +97,7 @@
                 android:textSize="25dp"
                 android:textColor="@color/primary_text"
                 android:padding="8dp"
-                android:text="Feu Artifice de la fête nationale"
+                android:text="@string/feu_artifice_de_la_f_te_nationale"
                 android:textAllCaps="true"/>
 
 
@@ -107,7 +109,6 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="15dp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -126,7 +127,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20dp"
-                android:text="Lille, champ de Mars" />
+
+                android:textColor="@color/primary_text"
+                android:text="@string/lille_champ_de_mars" />
 
 
         </LinearLayout>
@@ -147,7 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20dp"
-                android:text="Vous trouverez toutes les informations sur notre site si vous souhaitez vous y rendre" />
+                android:textColor="@color/primary_text"
+                android:text="@string/vous_trouverez_toutes_les_informations_sur_notre_site_si_vous_souhaitez_vous_y_rendre" />
 
 
         </LinearLayout>
@@ -166,12 +170,13 @@
 
         <Button
             android:id="@+id/signalButton"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_flag"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  Signaler" />
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_flag"
+            android:text="@string/signaler"
+            android:textColor="@color/primary_text" />
 
     </LinearLayout>
 
