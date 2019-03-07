@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +29,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,21 +38,21 @@
 
             <ImageButton
                 android:id="@+id/calendarButton"
-                android:scaleType="fitXY"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@android:color/transparent"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_event" />
 
             <TextView
                 android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-
-                android:textColor="@color/primary_text"
                 android:layout_marginStart="8dp"
-                android:text="@string/_14_07_2018_23h" />
+
+                android:text="@string/_14_07_2018_23h"
+                android:textColor="@color/primary_text"
+                android:textSize="20dp" />
 
             <ImageView
                 android:layout_width="0dip"
@@ -63,10 +64,10 @@
                 android:id="@+id/favorite"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
                 android:layout_gravity="right"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/ic_favorite_border"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY" />
 
             <ImageButton
                 android:id="@+id/route"
@@ -74,10 +75,9 @@
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:background="@drawable/ic_directions"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY" />
 
         </LinearLayout>
-
 
 
         <LinearLayout
@@ -102,11 +102,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="25dp"
-                android:textColor="@color/primary_text"
                 android:padding="8dp"
                 android:text="@string/feu_artifice_de_la_f_te_nationale"
-                android:textAllCaps="true"/>
+                android:textAllCaps="true"
+                android:textColor="@color/primary_text"
+                android:textSize="25dp" />
 
             <View
                 android:id="@+id/divider2"
@@ -121,30 +121,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
             <ImageButton
                 android:id="@+id/localisation"
-                android:scaleType="fitXY"
-                android:layout_marginRight="10dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_place"/>
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_place"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/textViewAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="20dp"
+                android:text="@string/lille_champ_de_mars"
 
                 android:textColor="@color/primary_text"
-                android:text="@string/lille_champ_de_mars" />
+                android:textSize="20dp" />
 
 
         </LinearLayout>
@@ -152,9 +152,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="15dp"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -164,9 +164,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="20dp"
+                android:text="@string/vous_trouverez_toutes_les_informations_sur_notre_site_si_vous_souhaitez_vous_y_rendre"
                 android:textColor="@color/primary_text"
-                android:text="@string/vous_trouverez_toutes_les_informations_sur_notre_site_si_vous_souhaitez_vous_y_rendre" />
+                android:textSize="20dp" />
 
 
         </LinearLayout>
@@ -174,9 +174,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="15dp"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -187,7 +187,7 @@
             android:id="@+id/signalButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="383dp"
             android:layout_gravity="center"
             android:drawableLeft="@drawable/ic_flag"
             android:text="@string/signaler"
