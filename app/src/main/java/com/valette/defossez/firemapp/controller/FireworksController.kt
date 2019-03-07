@@ -37,7 +37,29 @@ class FireworksController {
                     for (document in result) {
                         fireworks.add(document.toObject(Firework::class.java))
                     }
-                    activity.updateMarkers(fireworks)
+                    activity.displayMarkers(fireworks)
+                }
+    }
+
+    fun getAllAfterDate(start : Date, activity: HomeActivity) {
+        var fireworks = ArrayList<Firework>()
+        db.collection("fireworks").whereGreaterThanOrEqualTo("date", start).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        fireworks.add(document.toObject(Firework::class.java))
+                    }
+                    activity.displayMarkers(fireworks)
+                }
+    }
+
+    fun getAllBeforeDate(end : Date, activity: HomeActivity) {
+        var fireworks = ArrayList<Firework>()
+        db.collection("fireworks").whereGreaterThanOrEqualTo("date", end).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        fireworks.add(document.toObject(Firework::class.java))
+                    }
+                    activity.displayMarkers(fireworks)
                 }
     }
 
