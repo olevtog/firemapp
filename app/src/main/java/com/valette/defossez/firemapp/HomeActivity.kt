@@ -37,7 +37,7 @@ import java.util.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    val TIME_MOVE_CAMERA = 1500
+    val TIME_MOVE_CAMERA = 1000
     val ZOOM_CAMERA = 11.0f
     val REMOVE_LATITUDE = 0.07
     val EMAIL_ADRESS = "defossez.valette@gmail.com"
@@ -136,7 +136,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivityForResult(intent, 1)
             }
             R.id.nav_info -> {
-                Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)

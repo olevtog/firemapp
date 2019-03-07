@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.valette.defossez.firemapp">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -19,8 +20,7 @@
         <activity
             android:name=".FavoriteActivity"
             android:label="Mes favoris"
-            android:parentActivityName=".HomeActivity"></activity>
-
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
@@ -46,6 +46,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:label="A propos"
+            android:parentActivityName=".HomeActivity" />
     </application>
 
 </manifest>

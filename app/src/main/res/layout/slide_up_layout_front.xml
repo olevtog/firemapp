@@ -10,7 +10,7 @@
         android:id="@+id/buttonMonter"
         android:layout_margin="8dp"
         android:layout_width="50dp"
-        android:layout_height="8dp"
+        android:layout_height="7dp"
         android:background="@drawable/slideup_up_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +61,7 @@
                 android:id="@+id/favorite"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="right"
                 android:background="@drawable/ic_favorite_border"
                 android:scaleType="fitXY"/>
