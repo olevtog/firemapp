@@ -36,7 +36,7 @@
 
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/calendarButton"
                 android:scaleType="fitXY"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -161,7 +161,26 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="15dp"
 
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signalButton"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_flag"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Signaler" />
 
     </LinearLayout>
 

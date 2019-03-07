@@ -1,39 +1,35 @@
 package com.valette.defossez.firemapp
 
-import android.app.*
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import android.content.Intent
-import android.net.Uri
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.SeekBar
-import android.widget.Toast
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.valette.defossez.firemapp.controller.FireworksController
 import com.valette.defossez.firemapp.entity.Favorite
 import com.valette.defossez.firemapp.entity.Firework
 import com.valette.defossez.firemapp.service.LocationService
-import kotlinx.android.synthetic.main.activity_form_add_firework.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_maps.*
-import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.dialog_filter.view.*
 import kotlinx.android.synthetic.main.slide_up_layout_back.*
 import kotlinx.android.synthetic.main.slide_up_layout_front.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -41,6 +37,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val TIME_MOVE_CAMERA = 1500
     val ZOOM_CAMERA = 11.0f
     val REMOVE_LATITUDE = 0.07
+    val EMAIL_ADRESS = "defossez.valette@gmail.com"
 
     private lateinit var mMap: GoogleMap
     private val controller = FireworksController()
@@ -222,6 +219,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
+        }
+        // when you want to signal event
+        signalButton.setOnClickListener{
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/html"
+            intent.putExtra(Intent.EXTRA_EMAIL, EMAIL_ADRESS)
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie" + firework.id)
+            intent.putExtra(Intent.EXTRA_TEXT, "Motif de votre signalement : ")
+            startActivity(Intent.createChooser(intent, "Signaler l'évenement pas email :"))
+        }
+        // to add event in calendar
+        calendarButton.setOnClickListener{
+            val intent = Intent(Intent.ACTION_INSERT)
+            intent.type = "vnd.android.cursor.item/event"
+            val startTime = firework.date.time
+            val endTime = firework.date.time + 60 * 60 * 1000
+            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
+            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
+            intent.putExtra(CalendarContract.Events.TITLE, "FireMapp "+ firework.title)
+            intent.putExtra(CalendarContract.Events.DESCRIPTION, firework.description)
+            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, firework.description)
+            startActivity(intent)
         }
     }
 
