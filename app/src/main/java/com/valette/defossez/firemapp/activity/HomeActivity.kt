@@ -115,7 +115,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         try {
             mMap.clear()
             markers.clear()
-            controller.getAll(this)
+            controller.getAllAfterDate(Date(),this)
         } catch (e: Exception) {
         }
     }
