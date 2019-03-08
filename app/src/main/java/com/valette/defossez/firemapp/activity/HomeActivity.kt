@@ -59,6 +59,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
     private var markers: HashMap<String, Marker> = HashMap()
+    private var listFireworks : HashMap<String, Firework> = HashMap()
     private var favoriteState: Boolean = false
     private lateinit var locationService: LocationService
     private val ctx = this
@@ -116,6 +117,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             markers.clear()
             controller.getAll(this)
         } catch (e: Exception) {
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val id = data.extras.getString("id")
+                val latitude = data.extras.getDouble("latitude")
+                val longitude = data.extras.getDouble("longitude")
+                controller.getByIdMap(markers[id]!!.tag.toString(), this)
+                currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                markers[id]!!.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                currentMarker = markers[id]!!
+                moveToUserLocation(latitude, longitude, time = 1)
+            }
         }
     }
 
@@ -191,12 +207,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(47.35, 2.2)))
         mMap.animateCamera(CameraUpdateFactory.zoomTo(6.0f))
 
-        controller.getAll(this)
+        controller.getAllAfterDate(Date(), this)
 
         mMap.setOnMarkerClickListener { marker ->
             controller.getByIdMap(marker.tag.toString(), this)
-            currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            var currentFirework = listFireworks [currentMarker.tag.toString()]
+            if(currentFirework!!.date < Date()){
+                currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+            }else{
+                currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            }
+            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
             currentMarker = marker
             true
         }
@@ -217,15 +238,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var options = MarkerOptions()
             options.position(LatLng(f.latitude, f.longitude))
             options.title(f.title)
-
             if(f.date < Date()){
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
             }else{
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             }
             currentMarker = mMap.addMarker(options)
             currentMarker.tag = f.id
             markers.put(f.id, currentMarker)
+            listFireworks.put(f.id, f)
         }
     }
 
@@ -233,7 +254,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         closeKeyboard()
 
         favoriteState = FiremappApp.database.favoriteController().getByFirework(firework.id)
-        val format = SimpleDateFormat("dd/MM/yyy hh:mm")
+        val format = SimpleDateFormat("dd/MM/yyy HH:mm")
         textViewDate.text = format.format(firework.date)
         textViewAddress.text = firework.address
         textViewTitle.text = firework.title
@@ -288,7 +309,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
             intent.putExtra(CalendarContract.Events.TITLE, "FireMapp " + firework.title)
             intent.putExtra(CalendarContract.Events.DESCRIPTION, firework.description)
-            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, firework.description)
+            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, firework.address)
             startActivity(intent)
         }
     }
@@ -317,21 +338,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude - REMOVE_LATITUDE, longitude), ZOOM_CAMERA), newTime, null)
         } else {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), ZOOM_CAMERA), newTime, null)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                val id = data.extras.getString("id")
-                val latitude = data.extras.getDouble("latitude")
-                val longitude = data.extras.getDouble("longitude")
-                controller.getByIdMap(markers[id]!!.tag.toString(), this)
-                currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                markers[id]!!.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-                currentMarker = markers[id]!!
-                moveToUserLocation(latitude, longitude, time = 1)
-            }
         }
     }
 
