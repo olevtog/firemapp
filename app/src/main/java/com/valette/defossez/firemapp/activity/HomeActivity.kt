@@ -293,8 +293,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         signalButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO) // it's not ACTION_SEND
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Anomalie : " + firework.id)
-            intent.putExtra(Intent.EXTRA_TEXT, "Motif de votre signalement : ")
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[Firemapp] Retour sur l'application")
+            intent.putExtra(Intent.EXTRA_TEXT, "Merci pour votre retour sur le feu d'artifice numéro ${firework.id} (veuillez ne pas supprimer ce numéro)." +
+                    "\nMotif de votre retour : ")
             intent.data = Uri.parse("mailto:"+EMAIL_ADRESS)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)

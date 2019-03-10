@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/l_application_firemapp_permet_de_trouver_les_feux_d_artifices_en_quelques_clics"
+            android:text="Application réalisée par Gautier et Henri dans le cadre du projet PLATINE du master e-Services de l'Université de Lille.\nRemerciements à Monsieur Tarby pour son soutien."
             android:textSize="20sp" />
 
         <TextView
