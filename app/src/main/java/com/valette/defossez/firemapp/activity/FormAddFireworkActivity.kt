@@ -60,7 +60,7 @@ class FormAddFireworkActivity : AppCompatActivity() {
 
     }
 
-    private fun validate() {
+    fun validate() {
         if(inputAddress.text.isEmpty()){
             input_layout_address.error = "Veuillez entrer une adresse valide"
             return
