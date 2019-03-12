@@ -22,7 +22,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     private fun completeRecyclerView() {
         val rv = findViewById<RecyclerView>(R.id.recyclerFavorite)
-        rv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        rv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
         var allFavFireworks = FiremappApp.database.favoriteController().getAll()
         var adapter = FavoriteAdapter(allFavFireworks, this)
         rv.adapter = adapter

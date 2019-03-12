@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val DELAY_FIREWORK = 60 * 60 * 1000
     val EMAIL_ADRESS = "defossez.valette@gmail.com"
 
-    private lateinit var mMap: GoogleMap
+    lateinit var mMap: GoogleMap
     private val controller = FireworksController()
     private lateinit var currentMarker: Marker
     private var markers: HashMap<String, Marker> = HashMap()
