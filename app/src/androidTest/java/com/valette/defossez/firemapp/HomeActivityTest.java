@@ -31,12 +31,12 @@ public class HomeActivityTest {
     @Test
     public void DonneesDeBaseBonnesTest() {
         HomeActivity homeActivity = activityActivityTestRule.launchActivity(new Intent());
-        Assert.assertEquals(homeActivity.getTIME_MOVE_CAMERA_MAX(), 1500);
-        Assert.assertEquals(homeActivity.getTIME_MOVE_CAMERA_MIN(), 500);
-        Assert.assertEquals(homeActivity.getZOOM_CAMERA(), 12.5f, 0.01);
-        Assert.assertEquals(homeActivity.getREMOVE_LATITUDE(), 0.02, 0.01);
-        Assert.assertEquals(homeActivity.getDISTANCE_MOVE(), 10000);
-        Assert.assertEquals(homeActivity.getDELAY_FIREWORK(), 60 * 60 * 1000);
+        Assert.assertEquals(1500, homeActivity.getTIME_MOVE_CAMERA_MAX());
+        Assert.assertEquals(500, homeActivity.getTIME_MOVE_CAMERA_MIN());
+        Assert.assertEquals(12.5f, homeActivity.getZOOM_CAMERA(), 0.01);
+        Assert.assertEquals(0.02,homeActivity.getREMOVE_LATITUDE(),  0.01);
+        Assert.assertEquals(10000, homeActivity.getDISTANCE_MOVE());
+        Assert.assertEquals(60 * 60 * 1000, homeActivity.getDELAY_FIREWORK());
         Assert.assertTrue(homeActivity.getEMAIL_ADRESS().equals("defossez.valette@gmail.com"));
     }
 

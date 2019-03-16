@@ -5,6 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
@@ -13,6 +16,9 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:4.2.0'
+
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7"
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }
 }
 
@@ -25,4 +31,12 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property "sonar.sources", "src/main/java"
+    }
 }
