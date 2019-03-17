@@ -63,7 +63,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var favoriteState: Boolean = false
     private lateinit var locationService: LocationService
     private val ctx = this
-    val addressService = AddressService(this)
     var addresses = ArrayList<String>()
     var timer = Timer()
     val DELAY: Long = 500
@@ -105,8 +104,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         filterFloatingButton.setOnClickListener {
             displayDialogFilter()
         }
-
-        initAutocomplete()
     }
 
 
@@ -413,62 +410,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val format = "dd/MM/yy"
         val sdf = SimpleDateFormat(format, Locale.FRANCE)
         mDialogView.inputEnd.setText(sdf.format(cal.time))
-    }
-
-    val geocoder = Geocoder(this)
-
-    private fun initAutocomplete() {
-        var adapter = AddressAdapter(this, R.layout.dropdown, addresses)
-        search.threshold = 1
-        search.setAdapter<AddressAdapter>(adapter)
-        search.imeOptions = EditorInfo.IME_ACTION_DONE
-
-        search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(text: Editable?) {
-                getAddressFromInput(text.toString(), adapter)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        search.setOnEditorActionListener { input, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                try {
-                    moveToUserLocation(geocoder.getFromLocationName(input.text.toString(), 1)[0].latitude, geocoder.getFromLocationName(input.text.toString(), 1)[0].longitude)
-                    false
-                } catch (e: java.lang.Exception) {
-                    false
-                }
-            } else {
-                false
-            }
-        }
-    }
-
-    private fun getAddressFromInput(text: String, adapter: ArrayAdapter<String>) {
-        progressBar.visibility = View.VISIBLE
-        if (text.length > 3) {
-            timer.cancel()
-            timer = Timer()
-            timer.schedule(
-                    object : TimerTask() {
-                        override fun run() {
-                            ctx.runOnUiThread {
-                                if (text.isNotEmpty() && addressService.getAddresses(text, 3).isNotEmpty()) {
-                                    var address = addressService.getAddresses(text, 5)[0].getAddressLine(0)
-                                    adapter.clear()
-                                    adapter.add(address)
-                                }
-                                progressBar.visibility = View.GONE
-                            }
-
-                        }
-                    },
-                    DELAY
-            )
-        } else {
-            adapter.clear()
-        }
     }
 }
