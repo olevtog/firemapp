@@ -28,7 +28,6 @@ class FormAddFireworkActivity : AppCompatActivity() {
 
     val controller = FireworksController()
 
-    val addressService = AddressService(this)
     val cal = Calendar.getInstance()
     var addresses = ArrayList<String>()
     private lateinit var locationService: LocationService
@@ -54,9 +53,6 @@ class FormAddFireworkActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        location.setOnClickListener {
-            inputAddress.setText(addressService.getAddresses(locationService.getLatitude(), locationService.getLongitude(), 1)[0].getAddressLine(0))
-        }
 
     }
 
@@ -65,7 +61,6 @@ class FormAddFireworkActivity : AppCompatActivity() {
             input_layout_address.error = "Veuillez entrer une adresse valide"
             return
         }
-        var addresses = addressService.getAddresses(inputAddress.text.toString(), 1)
         if(addresses.isEmpty()){
             input_layout_address.error = "Veuillez entrer une adresse valide, adresse inconnue"
             return
@@ -83,7 +78,7 @@ class FormAddFireworkActivity : AppCompatActivity() {
         var date = SimpleDateFormat("dd/MM/yy HH:mm").parse("${inputDate.text}  ${inputTime.text}")
         var title = inputTitle.text
         var description = inputDescription.text
-        controller.create(Firework("", title.toString(), description.toString(), address.latitude, address.longitude, address.getAddressLine(0), date))
+        controller.create(Firework("", title.toString(), description.toString(), 0.0, 0.0, "adresse", date))
         finish()
     }
 
@@ -133,11 +128,6 @@ class FormAddFireworkActivity : AppCompatActivity() {
                     object : TimerTask() {
                         override fun run() {
                             ctx.runOnUiThread {
-                                if (text.isNotEmpty() && addressService.getAddresses(text, 3).isNotEmpty()) {
-                                    var address = addressService.getAddresses(text, 5)[0].getAddressLine(0)
-                                    adapter.clear()
-                                    adapter.add(address)
-                                }
                                 progressBar.visibility = View.GONE
                             }
 
